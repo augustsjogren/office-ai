@@ -32,9 +32,12 @@ public class WorkerMind : MonoBehaviour
 
         // TODO: implement A* here
 
+
+
         if (target != null)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }
     }
+
 }
