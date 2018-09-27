@@ -7,8 +7,6 @@ public class PathFinding : MonoBehaviour
     public Transform seeker, target;
     GridManager grid;
 
-
-
     void Awake()
     {
         grid = GameObject.Find("Grid").GetComponent<GridManager>(); 
@@ -35,6 +33,8 @@ public class PathFinding : MonoBehaviour
         //Node startNode = grid.NodeFromWorldPoint(startPos);
         //Node targetNode = grid.NodeFromWorldPoint(targetPos);
 
+        
+
         Coordinate startCoord = GridManager.GetCoordinate(transform.position);
         Node startNode = new Node(true, transform.position, startCoord.x, startCoord.y);
 
@@ -60,9 +60,12 @@ public class PathFinding : MonoBehaviour
             openSet.Remove(node);
             closedSet.Add(node);
 
-            if (node == targetNode)
+            // Debug.Log(node.gridX + " , " + targetNode.gridX);
+
+            if (node.gridX == targetNode.gridX && node.gridY == targetNode.gridY)
             {
-                RetracePath(startNode, targetNode);
+                // Debug.Log("Retrace");
+                RetracePath(startNode, node);
                 return;
             }
 
@@ -89,17 +92,28 @@ public class PathFinding : MonoBehaviour
 
     void RetracePath(Node startNode, Node endNode)
     {
+        // Debug.Log(startNode.gridX + " , " + startNode.gridY);
+        // Debug.Log(endNode.gridX + " , " + endNode.gridY);
+
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
 
-        while (currentNode != startNode)
+        while (currentNode != startNode && currentNode != null)
         {
+            // Debug.Log(currentNode.parent);
             path.Add(currentNode);
             currentNode = currentNode.parent;
         }
         path.Reverse();
 
         grid.path = path;
+
+
+        foreach (var node in path)
+        {
+            // Debug.Log(node);
+            GridManager.SetCellColor(node.gridX, node.gridY);
+        }
 
     }
 

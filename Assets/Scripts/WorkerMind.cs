@@ -36,7 +36,7 @@ public class WorkerMind : MonoBehaviour
 
         if (target != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+            // transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }
     }
 

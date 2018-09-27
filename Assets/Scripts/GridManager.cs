@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public Material goalMat;
+    public static Material goalMat;
 
     public GameObject cell;
     private static GameObject[,] cells;
@@ -33,7 +33,7 @@ public class GridManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        goalCoord = new Coordinate(15, 5);
+        goalCoord = new Coordinate(6, 18);
 
         cell.transform.localScale = new Vector3(cellSize, 1.0f, cellSize);
 
@@ -128,6 +128,14 @@ public class GridManager : MonoBehaviour
     public static Coordinate GetGoalCoordinate()
     {
         return goalCoord;
+    }
+
+    public static GameObject GetCell(int x, int y){
+        return cells[x,y];
+    }
+
+    public static void SetCellColor(int x, int y){
+        cells[x,y].GetComponent<Renderer>().material = goalMat;
     }
 
     // Update is called once per frame
