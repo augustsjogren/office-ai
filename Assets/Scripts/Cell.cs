@@ -18,6 +18,11 @@ public class Cell : MonoBehaviour {
 
     Renderer renderer;
 
+    LayerMask layerMask = 1 << 9;
+
+    RaycastHit hit;
+
+
     private void Awake()
     {
         renderer = GetComponent<Renderer>();
@@ -25,11 +30,24 @@ public class Cell : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
+
+        
+       
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity, layerMask))
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            Debug.Log("Did Hit obstacle");
+            walkable = false;
+            GridManager.Instance.SetWalkable(x, y, false);
+        }
+
+
         if (!walkable)
         {
             renderer.material = obstacleMat;

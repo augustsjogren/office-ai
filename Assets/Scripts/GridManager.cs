@@ -44,18 +44,18 @@ public class GridManager : MonoBehaviour
             Instance = this;
 
         //If instance already exists and it's not this:
-        else if (Instance != this) 
+        else if (Instance != this)
             Destroy(gameObject);
 
         // The grid will always have the same size as the plane in the scene
         cellSize = ground.GetComponent<Renderer>().bounds.size.x / cols;
 
-        goalCoord = new Coordinate(6, 18);
+        goalCoord = new Coordinate(6, 38);
 
-        cell.transform.localScale = new Vector3(cellSize, 1.0f, cellSize);
+        cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
 
-        float positionX = -cellSize * rows / 2 - spacing;
-        float positionZ = -cellSize * cols / 2 - spacing;
+        float positionX = -cellSize * rows / 2 - spacing + cellSize / 2;
+        float positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
 
         Vector3 currentPosition = new Vector3();
 
@@ -86,7 +86,7 @@ public class GridManager : MonoBehaviour
             }
 
             positionX += (cellSize + spacing);
-            positionZ = -cellSize * cols / 2 - spacing;
+            positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
         }
 
         goal = cells[goalCoord.x, goalCoord.y];
@@ -100,6 +100,11 @@ public class GridManager : MonoBehaviour
     public static Transform GetTarget()
     {
         return goal.transform;
+    }
+
+    public void SetWalkable(int x, int y, bool walkable)
+    {
+        grid[x, y].walkable = walkable;
     }
 
     public static Coordinate GetCoordinate(Vector3 position)
