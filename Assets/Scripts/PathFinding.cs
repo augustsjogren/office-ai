@@ -7,6 +7,23 @@ public class PathFinding : MonoBehaviour
     public Transform seeker, target;
     GridManager grid;
 
+    List<Node> path;
+
+    bool hasRetraced;
+
+    public bool HasRetraced
+    {
+        get
+        {
+            return hasRetraced;
+        }
+
+        set
+        {
+            hasRetraced = value;
+        }
+    }
+
     void Awake()
     {
         grid = GameObject.Find("Grid").GetComponent<GridManager>(); 
@@ -23,17 +40,12 @@ public class PathFinding : MonoBehaviour
         if(target != null && GridManager.isInitialized)
         {
             FindPath(seeker.position, target.position);
-        }
-        
+        }   
     }
 
     void FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        // Get start and target
-        //Node startNode = grid.NodeFromWorldPoint(startPos);
-        //Node targetNode = grid.NodeFromWorldPoint(targetPos);
-
-        
+        // Get start and target node
 
         Coordinate startCoord = GridManager.GetCoordinate(transform.position);
         Node startNode = new Node(true, transform.position, startCoord.x, startCoord.y);
@@ -60,11 +72,8 @@ public class PathFinding : MonoBehaviour
             openSet.Remove(node);
             closedSet.Add(node);
 
-            // Debug.Log(node.gridX + " , " + targetNode.gridX);
-
             if (node.gridX == targetNode.gridX && node.gridY == targetNode.gridY)
             {
-                // Debug.Log("Retrace");
                 RetracePath(startNode, node);
                 return;
             }
@@ -92,10 +101,7 @@ public class PathFinding : MonoBehaviour
 
     void RetracePath(Node startNode, Node endNode)
     {
-        // Debug.Log(startNode.gridX + " , " + startNode.gridY);
-        // Debug.Log(endNode.gridX + " , " + endNode.gridY);
-
-        List<Node> path = new List<Node>();
+        path = new List<Node>();
         Node currentNode = endNode;
 
         while (currentNode != startNode && currentNode != null)
@@ -108,13 +114,18 @@ public class PathFinding : MonoBehaviour
 
         grid.path = path;
 
-
+        GridManager.Instance.ClearPath();
         foreach (var node in path)
         {
-            // Debug.Log(node);
-            GridManager.SetCellColor(node.gridX, node.gridY);
+            GridManager.Instance.SetCellToPath(node.gridX, node.gridY);
         }
 
+        hasRetraced = true;
+
+    }
+
+    public List<Node> GetPath() {
+        return path;
     }
 
     int GetDistance(Node nodeA, Node nodeB)

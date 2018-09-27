@@ -9,7 +9,16 @@ public class WorkerMind : MonoBehaviour
 
     public Transform target;
 
+    public Vector3 nextLocation;
+
+    PathFinding pathFinding;
+
     public float step = 1;
+
+    private void Awake()
+    {
+        pathFinding = GetComponent<PathFinding>();
+    }
 
     // Use this for initialization
     void Start()
@@ -30,13 +39,16 @@ public class WorkerMind : MonoBehaviour
         targetPosition = target.position;
         targetPosition.y = initialPosition.y;
 
-        // TODO: implement A* here
-
-
-
-        if (target != null)
+        if (GridManager.isInitialized && pathFinding.HasRetraced && pathFinding.GetPath().Count > 0)
         {
-            // transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+            nextLocation = pathFinding.GetPath()[0].worldPosition;
+            nextLocation.y = initialPosition.y;
+        }
+
+        // Move towards the next location in the path
+        if (nextLocation != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
         }
     }
 

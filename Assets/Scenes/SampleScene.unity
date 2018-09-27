@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -143,6 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50882465b1d14bf40986a5cb56eead19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goalMat: {fileID: 2100000, guid: b2b5474957544774f8827158012c828d, type: 2}
+  pathMat: {fileID: 2100000, guid: 33fa95f6cf47d044c97a41e0135c1340, type: 2}
+  obstacleMat: {fileID: 2100000, guid: 96f407bb8a4a2d542b2e4dac42a46e61, type: 2}
+  celllMat: {fileID: 2100000, guid: 591e7b642c6da084cb3dd6091430bf2a, type: 2}
+  walkable: 0
+  isPath: 0
 --- !u!65 &156088517
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -362,6 +368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 813313119}
   - component: {fileID: 813313118}
+  - component: {fileID: 813313120}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -381,7 +388,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goalMat: {fileID: 2100000, guid: b2b5474957544774f8827158012c828d, type: 2}
+  pathMat: {fileID: 2100000, guid: 33fa95f6cf47d044c97a41e0135c1340, type: 2}
+  obstacleMat: {fileID: 2100000, guid: 96f407bb8a4a2d542b2e4dac42a46e61, type: 2}
+  celllMat: {fileID: 2100000, guid: 591e7b642c6da084cb3dd6091430bf2a, type: 2}
   cell: {fileID: 156088515}
+  ground: {fileID: 1606397124}
   rows: 20
   cols: 20
   cellSize: 0.5
@@ -400,6 +411,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &813313120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 813313117}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e2ec2072d863384db62731c06fd2e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rows: 0
+  cols: 0
+  cellSize: 1
+  spacing: 0.01
+  cell: {fileID: 156088515}
 --- !u!1 &1492640802
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  nextLocation: {x: 0, y: 0, z: 0}
   step: 0.05
 --- !u!114 &1492640808
 MonoBehaviour:

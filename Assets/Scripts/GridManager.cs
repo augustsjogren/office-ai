@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public static Material goalMat;
+
+    public static GridManager Instance = null;
+
+    public Material goalMat;
+    public Material pathMat;
+    public Material obstacleMat;
+    public Material celllMat;
 
     public GameObject cell;
     private static GameObject[,] cells;
     private static GameObject goal;
     private static Coordinate goalCoord;
+    public GameObject ground;
 
     private Node[,] grid;
 
@@ -29,10 +36,20 @@ public class GridManager : MonoBehaviour
         grid = new Node[rows, cols];
     }
 
-
     // Use this for initialization
     void Start()
     {
+        //Check if instance already exists
+        if (Instance == null)
+            Instance = this;
+
+        //If instance already exists and it's not this:
+        else if (Instance != this) 
+            Destroy(gameObject);
+
+        // The grid will always have the same size as the plane in the scene
+        cellSize = ground.GetComponent<Renderer>().bounds.size.x / cols;
+
         goalCoord = new Coordinate(6, 18);
 
         cell.transform.localScale = new Vector3(cellSize, 1.0f, cellSize);
@@ -53,7 +70,17 @@ public class GridManager : MonoBehaviour
                 newCell.transform.position = currentPosition;
                 newCell.gameObject.name = "Cell [" + r + "," + c + "]";
                 cells[r, c] = newCell;
-                grid[r, c] = new Node(true, newCell.transform.position, r, c);
+
+                if (c == 10 && r != 13)
+                {
+                    grid[r, c] = new Node(false, newCell.transform.position, r, c);
+                    cells[r, c].GetComponent<Cell>().walkable = false;
+                }
+                else
+                {
+                    grid[r, c] = new Node(true, newCell.transform.position, r, c);
+                    cells[r, c].GetComponent<Cell>().walkable = true;
+                }
 
                 positionZ += (cellSize + spacing);
             }
@@ -62,9 +89,7 @@ public class GridManager : MonoBehaviour
             positionZ = -cellSize * cols / 2 - spacing;
         }
 
-        //goal = cells[5, 15];
         goal = cells[goalCoord.x, goalCoord.y];
-
         goal.gameObject.GetComponent<Renderer>().material = goalMat;
 
         cell.gameObject.SetActive(false);
@@ -81,24 +106,22 @@ public class GridManager : MonoBehaviour
     {
 
         float minDistance = 1000;
-        //GameObject closestCell = new GameObject();
         int x = 0, y = 0;
 
         for (int i = 0; i < cells.GetLength(0); i++)
         {
             for (int j = 0; j < cells.GetLength(1); j++)
             {
-                if (Vector3.Distance(position, cells[i,j].transform.position) < minDistance)
+                if (Vector3.Distance(position, cells[i, j].transform.position) < minDistance)
                 {
                     minDistance = Vector3.Distance(position, cells[i, j].transform.position);
-                    //closestCell = cells[i, j];
                     x = i;
                     y = j;
                 }
             }
         }
 
-        return new Coordinate(x,y);
+        return new Coordinate(x, y);
     }
 
     public List<Node> GetNeighbours(Node node)
@@ -130,17 +153,27 @@ public class GridManager : MonoBehaviour
         return goalCoord;
     }
 
-    public static GameObject GetCell(int x, int y){
-        return cells[x,y];
-    }
-
-    public static void SetCellColor(int x, int y){
-        cells[x,y].GetComponent<Renderer>().material = goalMat;
-    }
-
-    // Update is called once per frame
-    void Update()
+    public static GameObject GetCell(int x, int y)
     {
+        return cells[x, y];
+    }
 
+    // Reset color for cells not longer part of the path
+    public void ClearPath()
+    {
+        foreach (var cell in cells)
+        {
+            var cellComp = cell.GetComponent<Cell>();
+
+            if (cellComp.isPath)
+            {
+                cellComp.isPath = false;
+            }
+        }
+    }
+
+    public void SetCellToPath(int x, int y)
+    {
+        cells[x, y].GetComponent<Cell>().isPath = true;
     }
 }
