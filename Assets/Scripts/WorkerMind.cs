@@ -15,6 +15,10 @@ public class WorkerMind : MonoBehaviour
 
     public float step = 1;
 
+    // Variable for deciding what to do
+    // 0 is idle
+    public int state;
+
     private void Awake()
     {
         pathFinding = GetComponent<PathFinding>();
@@ -25,6 +29,8 @@ public class WorkerMind : MonoBehaviour
     {
         initialPosition = transform.position;
         targetPosition = new Vector3();
+
+        state = 1;
     }
 
     public void SetTarget(Transform t)

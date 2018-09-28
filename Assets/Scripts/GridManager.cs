@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-
     public static GridManager Instance = null;
 
     public Material goalMat;
@@ -16,6 +15,7 @@ public class GridManager : MonoBehaviour
     private static GameObject[,] cells;
     private static GameObject goal;
     private static Coordinate goalCoord;
+    private Coordinate coffeeLocation;
     public GameObject ground;
 
     private Node[,] grid;
@@ -52,6 +52,8 @@ public class GridManager : MonoBehaviour
 
         goalCoord = new Coordinate(6, 38);
 
+        coffeeLocation = new Coordinate(1, 1);
+
         cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
 
         CreateGrid();
@@ -62,6 +64,23 @@ public class GridManager : MonoBehaviour
         cell.gameObject.SetActive(false);
 
         isInitialized = true;
+    }
+
+    public Coordinate GetCoffeeLocation()
+    {
+        return coffeeLocation;
+    }
+
+    public void SetCoffeeLocation(int x, int y)
+    {
+        coffeeLocation = new Coordinate(x, y);
+    }
+
+    public Transform GetCoffeeTarget()
+    {
+
+        return GetCell(coffeeLocation.x, coffeeLocation.y).transform;
+
     }
 
     public static Transform GetTarget()
@@ -168,7 +187,7 @@ public class GridManager : MonoBehaviour
         return goalCoord;
     }
 
-    public static GameObject GetCell(int x, int y)
+    public GameObject GetCell(int x, int y)
     {
         return cells[x, y];
     }

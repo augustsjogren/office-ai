@@ -51,7 +51,26 @@ public class PathFinding : MonoBehaviour
         Node startNode = new Node(true, transform.position, startCoord.x, startCoord.y);
 
         Coordinate goalCoord = GridManager.GetGoalCoordinate();
-        Node targetNode = new Node(true, GridManager.GetTarget().position, goalCoord.x, goalCoord.y);
+        Coordinate coffeeCoord = GridManager.Instance.GetCoffeeLocation();
+
+        Node targetNode;
+
+        switch (GetComponent<WorkerMind>().state)
+        {
+            case 0:
+                // Do nothing special
+                targetNode = new Node(true, GridManager.GetTarget().position, goalCoord.x, goalCoord.y);
+                break;
+
+            case 1:
+                // Get a coffee
+                targetNode = new Node(true, GridManager.Instance.GetCoffeeTarget().position, coffeeCoord.x, coffeeCoord.y);
+                break;
+
+            default:
+                targetNode = new Node(true, transform.position, 0, 0);
+                break;
+        }
 
         List<Node> openSet = new List<Node>();
         HashSet<Node> closedSet = new HashSet<Node>();
@@ -106,7 +125,6 @@ public class PathFinding : MonoBehaviour
 
         while (currentNode != startNode && currentNode != null)
         {
-            // Debug.Log(currentNode.parent);
             path.Add(currentNode);
             currentNode = currentNode.parent;
         }
@@ -121,7 +139,6 @@ public class PathFinding : MonoBehaviour
         }
 
         hasRetraced = true;
-
     }
 
     public List<Node> GetPath() {

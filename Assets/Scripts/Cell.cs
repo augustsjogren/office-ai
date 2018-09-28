@@ -16,6 +16,7 @@ public class Cell : MonoBehaviour
 
     public bool walkable;
     public bool isPath;
+    public bool isGoal;
 
     Renderer rend;
 
@@ -32,7 +33,7 @@ public class Cell : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        CheckForObstacle();
+        
     }
 
     // Update is called once per frame
@@ -57,15 +58,28 @@ public class Cell : MonoBehaviour
 
     private void CheckForObstacle(){
          // An obstacle is placed in this location, make the cell unwalkable.
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity))
         {
-            walkable = false;
-            GridManager.Instance.SetWalkable(x, y, false);
+
+            if (hit.transform.gameObject.name == "CoffeeMachine")
+            {
+                isGoal = true;
+                GridManager.Instance.SetCoffeeLocation(x, y);
+            }
+
+            if(hit.transform.gameObject.layer == 9)
+            {
+                //Debug.Log(hit.transform.gameObject.name);
+                walkable = false;
+                GridManager.Instance.SetWalkable(x, y, false);
+            }
+            else
+            {
+                walkable = true;
+                GridManager.Instance.SetWalkable(x, y, true);
+            }
+
         }
-        else
-        {
-            walkable = true;
-            GridManager.Instance.SetWalkable(x, y, true);
-        }
+        
     }
 }
