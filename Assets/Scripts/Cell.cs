@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell : MonoBehaviour {
+public class Cell : MonoBehaviour
+{
 
     public Material goalMat;
     public Material pathMat;
@@ -10,13 +11,13 @@ public class Cell : MonoBehaviour {
     public Material celllMat;
 
 
-    private int x;
-    private int y;
+    public int x;
+    public int y;
 
     public bool walkable;
     public bool isPath;
 
-    Renderer renderer;
+    Renderer rend;
 
     LayerMask layerMask = 1 << 9;
 
@@ -25,40 +26,46 @@ public class Cell : MonoBehaviour {
 
     private void Awake()
     {
-        renderer = GetComponent<Renderer>();
+        rend = GetComponent<Renderer>();
     }
 
     // Use this for initialization
-    void Start () {
-
-        
-       
-
+    void Start()
+    {
+        CheckForObstacle();
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity, layerMask))
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit obstacle");
-            walkable = false;
-            GridManager.Instance.SetWalkable(x, y, false);
-        }
-
+    // Update is called once per frame
+    void Update()
+    {
+       
+        CheckForObstacle();
 
         if (!walkable)
         {
-            renderer.material = obstacleMat;
+            rend.material = obstacleMat;
         }
         else if (isPath)
         {
-            renderer.material = pathMat;
+            rend.material = pathMat;
         }
         else
         {
-            renderer.material = celllMat;
+            rend.material = celllMat;
         }
-	}
+    }
+
+    private void CheckForObstacle(){
+         // An obstacle is placed in this location, make the cell unwalkable.
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity, layerMask))
+        {
+            walkable = false;
+            GridManager.Instance.SetWalkable(x, y, false);
+        }
+        else
+        {
+            walkable = true;
+            GridManager.Instance.SetWalkable(x, y, true);
+        }
+    }
 }

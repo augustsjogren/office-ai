@@ -54,40 +54,7 @@ public class GridManager : MonoBehaviour
 
         cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
 
-        float positionX = -cellSize * rows / 2 - spacing + cellSize / 2;
-        float positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
-
-        Vector3 currentPosition = new Vector3();
-
-        for (int r = 0; r < rows; r++)
-        {
-            for (int c = 0; c < cols; c++)
-            {
-                currentPosition.x = positionX;
-                currentPosition.z = positionZ;
-
-                GameObject newCell = Instantiate(cell);
-                newCell.transform.position = currentPosition;
-                newCell.gameObject.name = "Cell [" + r + "," + c + "]";
-                cells[r, c] = newCell;
-
-                if (c == 10 && r != 13)
-                {
-                    grid[r, c] = new Node(false, newCell.transform.position, r, c);
-                    cells[r, c].GetComponent<Cell>().walkable = false;
-                }
-                else
-                {
-                    grid[r, c] = new Node(true, newCell.transform.position, r, c);
-                    cells[r, c].GetComponent<Cell>().walkable = true;
-                }
-
-                positionZ += (cellSize + spacing);
-            }
-
-            positionX += (cellSize + spacing);
-            positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
-        }
+        CreateGrid();
 
         goal = cells[goalCoord.x, goalCoord.y];
         goal.gameObject.GetComponent<Renderer>().material = goalMat;
@@ -105,6 +72,49 @@ public class GridManager : MonoBehaviour
     public void SetWalkable(int x, int y, bool walkable)
     {
         grid[x, y].walkable = walkable;
+    }
+
+    public void CreateGrid()
+    {
+
+        float positionX = -cellSize * rows / 2 - spacing + cellSize / 2;
+        float positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
+
+        Vector3 currentPosition = new Vector3();
+
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                currentPosition.x = positionX;
+                currentPosition.z = positionZ;
+
+                GameObject newCell = Instantiate(cell);
+                newCell.transform.position = currentPosition;
+                newCell.gameObject.name = "Cell [" + r + "," + c + "]";
+                cells[r, c] = newCell;
+
+                var cellComp = cells[r, c].GetComponent<Cell>();
+                cellComp.x = r;
+                cellComp.y = c;
+
+                if (c == 10 && r != 13)
+                {
+                    grid[r, c] = new Node(false, newCell.transform.position, r, c);
+                    cellComp.walkable = false;
+                }
+                else
+                {
+                    grid[r, c] = new Node(true, newCell.transform.position, r, c);
+                    cellComp.walkable = true;
+                }
+
+                positionZ += (cellSize + spacing);
+            }
+
+            positionX += (cellSize + spacing);
+            positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
+        }
     }
 
     public static Coordinate GetCoordinate(Vector3 position)
