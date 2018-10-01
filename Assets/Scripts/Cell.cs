@@ -33,10 +33,10 @@ public class Cell : MonoBehaviour
         {
             rend.material = obstacleMat;
         }
-        else if (isPath)
-        {
-            rend.material = pathMat;
-        }
+        //else if (isPath)
+        //{
+        //    rend.material = pathMat;
+        //}
         else
         {
             rend.material = celllMat;

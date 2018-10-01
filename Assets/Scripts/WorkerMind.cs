@@ -15,6 +15,9 @@ public class WorkerMind : MonoBehaviour
     public float step = 1;
     float refreshInterval;
     bool gotPath;
+    bool closeEnough;
+
+    float minimumDistance = 1.5f;
 
     // Variable for deciding what to do
     // 0 is idle
@@ -59,6 +62,7 @@ public class WorkerMind : MonoBehaviour
 
     void RefreshPath()
     {
+        closeEnough = false;
         pathFinding.RefreshTarget();
         path = pathFinding.GetPath();
     }
@@ -66,12 +70,16 @@ public class WorkerMind : MonoBehaviour
     // Advance along the path
     void Advance()
     {
+        // Stop moving when close enough
+        if(Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
+        {
+            closeEnough = true;
+        }
+
         if (HasMoved())
         {
             path.RemoveAt(0);
         }
-
-        print(path.Count);
 
         if (GridManager.isInitialized && path.Count > 0)
         {
@@ -80,7 +88,7 @@ public class WorkerMind : MonoBehaviour
         }
 
         // Move towards the next location in the path
-        if (path.Count > 0)
+        if (path.Count > 0 && !closeEnough)
         {
             transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
         }

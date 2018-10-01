@@ -94,6 +94,31 @@ public class GridManager : MonoBehaviour
     public void SetWalkable(int x, int y, bool walkable)
     {
         grid[x, y].walkable = walkable;
+
+
+        if (!walkable)
+        {
+            if (x > 0)
+            {
+                grid[x - 1, y].walkable = walkable;
+            }
+
+            if (x < cols - 1)
+            {
+                grid[x + 1, y].walkable = walkable;
+            }
+
+            if (y > 0)
+            {
+                grid[x, y - 1].walkable = walkable;
+            }
+
+            if (y < rows - 1)
+            {
+                grid[x, y + 1].walkable = walkable;
+            }
+        }
+
     }
 
     public void CreateGrid()
@@ -111,6 +136,7 @@ public class GridManager : MonoBehaviour
                 currentPosition.z = positionZ;
 
                 GameObject newCell = Instantiate(cell);
+                newCell.transform.SetParent(transform);
                 newCell.transform.position = currentPosition;
                 newCell.gameObject.name = "Cell [" + r + "," + c + "]";
                 cells[r, c] = newCell;
