@@ -18,6 +18,8 @@ public class GridManager : MonoBehaviour
     private Coordinate coffeeLocation;
     public GameObject ground;
 
+    public GameObject[] desks;
+
     private Node[,] grid;
 
     public int rows;
@@ -46,6 +48,8 @@ public class GridManager : MonoBehaviour
         //If instance already exists and it's not this:
         else if (Instance != this)
             Destroy(gameObject);
+
+        desks = GameObject.FindGameObjectsWithTag("Desk");
 
         // The grid will always have the same size as the plane in the scene
         cellSize = ground.GetComponent<Renderer>().bounds.size.x / cols;
@@ -78,7 +82,6 @@ public class GridManager : MonoBehaviour
 
     public Transform GetCoffeeTarget()
     {
-
         return GetCell(coffeeLocation.x, coffeeLocation.y).transform;
 
     }
@@ -95,7 +98,6 @@ public class GridManager : MonoBehaviour
 
     public void CreateGrid()
     {
-
         float positionX = -cellSize * rows / 2 - spacing + cellSize / 2;
         float positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
 
@@ -117,16 +119,9 @@ public class GridManager : MonoBehaviour
                 cellComp.x = r;
                 cellComp.y = c;
 
-                if (c == 10 && r != 13)
-                {
-                    grid[r, c] = new Node(false, newCell.transform.position, r, c);
-                    cellComp.walkable = false;
-                }
-                else
-                {
-                    grid[r, c] = new Node(true, newCell.transform.position, r, c);
-                    cellComp.walkable = true;
-                }
+                // Create nodes for A*
+                grid[r, c] = new Node(true, newCell.transform.position, r, c);
+                cellComp.walkable = true;
 
                 positionZ += (cellSize + spacing);
             }
@@ -136,9 +131,9 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    // Get grid coordinate from world position
     public static Coordinate GetCoordinate(Vector3 position)
     {
-
         float minDistance = 1000;
         int x = 0, y = 0;
 

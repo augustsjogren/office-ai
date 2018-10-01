@@ -5,19 +5,22 @@ using UnityEngine;
 public class WorkerMind : MonoBehaviour
 {
     private Vector3 initialPosition;
-    private Vector3 targetPosition;
-
     public Transform target;
-
     public Vector3 nextLocation;
 
     PathFinding pathFinding;
+    GameObject currentCell;
+    public GameObject homeDesk;
 
     public float step = 1;
+    float refreshInterval;
+    bool gotPath;
 
     // Variable for deciding what to do
     // 0 is idle
     public int state;
+
+    List<Node> path;
 
     private void Awake()
     {
@@ -28,9 +31,11 @@ public class WorkerMind : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;
-        targetPosition = new Vector3();
+        refreshInterval = 0.75f;
+        path = new List<Node>();
 
-        state = 1;
+        // Check for updated path every 0.75 seconds
+        InvokeRepeating("RefreshPath", 0.1f, refreshInterval);
     }
 
     public void SetTarget(Transform t)
@@ -41,21 +46,86 @@ public class WorkerMind : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        target = GridManager.GetTarget();
-        targetPosition = target.position;
-        targetPosition.y = initialPosition.y;
-
-        if (GridManager.isInitialized && pathFinding.HasRetraced && pathFinding.GetPath().Count > 0)
+        // Initialize the worker with working state
+        if (GridManager.isInitialized && !gotPath)
         {
-            nextLocation = pathFinding.GetPath()[0].worldPosition;
+            Work();
+            currentCell = GetCellBelow();
+            gotPath = true;
+        }
+
+        Advance();
+    }
+
+    void RefreshPath()
+    {
+        pathFinding.RefreshTarget();
+        path = pathFinding.GetPath();
+    }
+
+    // Advance along the path
+    void Advance()
+    {
+        if (HasMoved())
+        {
+            path.RemoveAt(0);
+        }
+
+        print(path.Count);
+
+        if (GridManager.isInitialized && path.Count > 0)
+        {
+            nextLocation = path[0].worldPosition;
             nextLocation.y = initialPosition.y;
         }
 
         // Move towards the next location in the path
-        if (nextLocation != null)
+        if (path.Count > 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
         }
     }
 
+    // Has the worker moved to a new tile? In that case remove the previous tile from the worker path
+    bool HasMoved()
+    {
+        var newCell = GetCellBelow();
+
+        if (GameObject.ReferenceEquals(newCell, currentCell))
+        {
+            // Has not moved
+            return false;
+        }
+
+        currentCell = newCell;
+        return true;
+    }
+
+    // Get the object underneath the worker
+    GameObject GetCellBelow()
+    {
+        RaycastHit hit;
+        GameObject GO = null;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+        {
+            GO = hit.transform.gameObject;
+        }
+
+        return GO;
+    }
+
+    public void Work()
+    {
+        state = 0;
+        pathFinding.RefreshTarget();
+        path = pathFinding.GetPath();
+    }
+
+    public void GetCoffee()
+    {
+        state = 1;
+        pathFinding.RefreshTarget();
+        path = pathFinding.GetPath();
+    }
 }
