@@ -23,6 +23,8 @@ public class WorkerMind : MonoBehaviour
     // 0 is idle
     public int state;
 
+    public int hunger;
+
     List<Node> path;
 
     private void Awake()
@@ -49,6 +51,7 @@ public class WorkerMind : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         // Initialize the worker with working state
         if (GridManager.isInitialized && !gotPath)
         {
@@ -57,8 +60,46 @@ public class WorkerMind : MonoBehaviour
             gotPath = true;
         }
 
+        MakeDecision();
+
         Advance();
     }
+
+    private void IncreaseHunger()
+    {
+        hunger++;
+    }
+
+    // Figure out what to do next
+    public void MakeDecision()
+    {
+        if (OfficeManager.instance.isBreak)
+        {
+            if (hunger > 50)
+            {
+                if (OfficeManager.instance.isLunch)
+                {
+                    //Get lunch
+                }
+                else
+                {
+                    // Get a coffee
+                    GetCoffee();
+                }
+            }
+            else
+            {
+                // Sit at desk
+                Work();
+            }
+        }
+        else
+        {
+            // Work
+            Work();
+        }
+    }
+
 
     void RefreshPath()
     {
@@ -71,11 +112,12 @@ public class WorkerMind : MonoBehaviour
     void Advance()
     {
         // Stop moving when close enough
-        if(Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
+        if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
         {
             closeEnough = true;
         }
 
+        // Remove tiles already traversed
         if (HasMoved())
         {
             path.RemoveAt(0);

@@ -8,6 +8,11 @@ public class OfficeManager : MonoBehaviour
 
     GameObject[] workers;
 
+    float breakTime;
+
+    public bool isBreak;
+    public bool isLunch;
+
     private void Awake()
     {
         if (instance == null)
@@ -25,6 +30,22 @@ public class OfficeManager : MonoBehaviour
     void Start()
     {
         workers = GameObject.FindGameObjectsWithTag("Worker");
+    }
+
+    private void Update()
+    {
+        breakTime += Time.deltaTime;
+
+        if (breakTime > 10)
+        {
+            isBreak = true;
+        }
+
+        if(breakTime > 30)
+        {
+            isBreak = false;
+            breakTime = 0.0f;
+        }
     }
 
     public void CoffeeBreak()
