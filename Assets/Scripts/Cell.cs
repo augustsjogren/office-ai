@@ -24,9 +24,8 @@ public class Cell : MonoBehaviour
         rend = GetComponent<Renderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    public void InitCell(){
+
         CheckForObstacle();
 
         if (!walkable)
@@ -41,11 +40,15 @@ public class Cell : MonoBehaviour
         {
             rend.material = celllMat;
         }
+
+        //Disable the object to improve performance
+        gameObject.SetActive(false);
     }
 
     // Check if the tile is walkable, and set its status accordingly
-    private void CheckForObstacle(){
-         // An obstacle is placed in this location, make the cell unwalkable.
+    private void CheckForObstacle()
+    {
+        // An obstacle is placed in this location, make the cell unwalkable.
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity))
         {
             if (hit.transform.gameObject.name == "CoffeeMachine")
@@ -54,7 +57,7 @@ public class Cell : MonoBehaviour
                 GridManager.Instance.SetCoffeeLocation(x, y);
             }
 
-            if(hit.transform.gameObject.layer == 9)
+            if (hit.transform.gameObject.layer == 9)
             {
                 walkable = false;
                 GridManager.Instance.SetWalkable(x, y, false);

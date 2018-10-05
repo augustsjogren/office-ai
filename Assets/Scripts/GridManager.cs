@@ -68,6 +68,15 @@ public class GridManager : MonoBehaviour
         cell.gameObject.SetActive(false);
 
         isInitialized = true;
+
+        InitializeAllCells();
+    }
+
+    void InitializeAllCells(){
+        foreach (var cell in cells)
+        {
+            cell.GetComponent<Cell>().InitCell();
+        }
     }
 
     public Coordinate GetCoffeeLocation()

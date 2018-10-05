@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -145,10 +145,10 @@ RectTransform:
   m_Father: {fileID: 1843667847}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 52.3}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 204.70001, y: -720}
+  m_SizeDelta: {x: 369.40002, y: 52.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &45644488
 MonoBehaviour:
@@ -1420,6 +1420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86086e5bac373cd44a5f2b330bcd8a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBreak: 0
+  isLunch: 0
 --- !u!4 &871743055
 Transform:
   m_ObjectHideFlags: 0
@@ -2109,6 +2111,7 @@ MonoBehaviour:
   homeDesk: {fileID: 828327078}
   step: 0.05
   state: 1
+  hunger: 55
 --- !u!114 &1492640808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2258,6 +2261,7 @@ MonoBehaviour:
   homeDesk: {fileID: 1361777303}
   step: 0.05
   state: 0
+  hunger: 0
 --- !u!136 &1632216371
 CapsuleCollider:
   m_ObjectHideFlags: 0
