@@ -53,6 +53,7 @@ public class PathFinding : MonoBehaviour
         if (target != null && GridManager.isInitialized)
         {
             FindPath(seeker.position, target.position);
+            mind.SetTarget(target);
         }
     }
 

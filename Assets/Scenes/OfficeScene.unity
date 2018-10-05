@@ -126,6 +126,8 @@ GameObject:
   - component: {fileID: 27719452}
   - component: {fileID: 27719451}
   - component: {fileID: 27719450}
+  - component: {fileID: 27719456}
+  - component: {fileID: 27719455}
   m_Layer: 0
   m_Name: BlueWorker
   m_TagString: Worker
@@ -174,6 +176,7 @@ MonoBehaviour:
   nextLocation: {x: 0, y: 0, z: 0}
   homeDesk: {fileID: 413427955}
   step: 0.1
+  closeEnough: 0
   state: 0
   hunger: 80
 --- !u!136 &27719452
@@ -231,6 +234,38 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 27719448}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &27719455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 27719448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be509f771ac34186a9248d7ce7a66cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &27719456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 27719448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scripts:
+  - {fileID: 4900000, guid: dec7118260fdd4e50a76f17965c275c6, type: 3}
+  autoReset: 1
+  tickOn: 0
+  sourceInfos:
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
 --- !u!1 &45644486
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 204.70001, y: -534.22595}
+  m_AnchoredPosition: {x: 204.70001, y: -560.9842}
   m_SizeDelta: {x: 369.40002, y: 52.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &45644488
@@ -1913,6 +1948,8 @@ GameObject:
   - component: {fileID: 903597492}
   - component: {fileID: 903597491}
   - component: {fileID: 903597490}
+  - component: {fileID: 903597496}
+  - component: {fileID: 903597495}
   m_Layer: 0
   m_Name: GreenWorker
   m_TagString: Worker
@@ -1961,6 +1998,7 @@ MonoBehaviour:
   nextLocation: {x: 0, y: 0, z: 0}
   homeDesk: {fileID: 230444294}
   step: 0.1
+  closeEnough: 0
   state: 0
   hunger: 80
 --- !u!136 &903597492
@@ -2018,6 +2056,38 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 903597488}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &903597495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 903597488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be509f771ac34186a9248d7ce7a66cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &903597496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 903597488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scripts:
+  - {fileID: 4900000, guid: dec7118260fdd4e50a76f17965c275c6, type: 3}
+  autoReset: 1
+  tickOn: 0
+  sourceInfos:
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
 --- !u!1 &931550410
 GameObject:
   m_ObjectHideFlags: 0
@@ -2688,6 +2758,8 @@ GameObject:
   - component: {fileID: 1492640803}
   - component: {fileID: 1492640807}
   - component: {fileID: 1492640808}
+  - component: {fileID: 1492640810}
+  - component: {fileID: 1492640809}
   m_Layer: 0
   m_Name: YellowWorker
   m_TagString: Worker
@@ -2778,6 +2850,7 @@ MonoBehaviour:
   nextLocation: {x: 0, y: 0, z: 0}
   homeDesk: {fileID: 828327078}
   step: 0.1
+  closeEnough: 0
   state: 0
   hunger: 55
 --- !u!114 &1492640808
@@ -2793,6 +2866,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seeker: {fileID: 0}
   target: {fileID: 0}
+--- !u!114 &1492640809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1492640802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be509f771ac34186a9248d7ce7a66cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1492640810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1492640802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scripts:
+  - {fileID: 4900000, guid: dec7118260fdd4e50a76f17965c275c6, type: 3}
+  autoReset: 1
+  tickOn: 0
+  sourceInfos:
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
 --- !u!1 &1606397124
 GameObject:
   m_ObjectHideFlags: 0
@@ -2893,6 +2998,8 @@ GameObject:
   - component: {fileID: 1632216371}
   - component: {fileID: 1632216370}
   - component: {fileID: 1632216369}
+  - component: {fileID: 1632216375}
+  - component: {fileID: 1632216376}
   m_Layer: 0
   m_Name: PurpleWorker
   m_TagString: Worker
@@ -2928,6 +3035,7 @@ MonoBehaviour:
   nextLocation: {x: 0, y: 0, z: 0}
   homeDesk: {fileID: 1361777303}
   step: 0.1
+  closeEnough: 0
   state: 0
   hunger: 0
 --- !u!136 &1632216371
@@ -2998,6 +3106,38 @@ Transform:
   m_Father: {fileID: 93491906}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1632216375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632216368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scripts:
+  - {fileID: 4900000, guid: dec7118260fdd4e50a76f17965c275c6, type: 3}
+  autoReset: 1
+  tickOn: 0
+  sourceInfos:
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
+--- !u!114 &1632216376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632216368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be509f771ac34186a9248d7ce7a66cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1704450419
 GameObject:
   m_ObjectHideFlags: 0

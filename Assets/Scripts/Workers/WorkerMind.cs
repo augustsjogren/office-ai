@@ -38,9 +38,6 @@ public class WorkerMind : MonoBehaviour
         initialPosition = transform.position;
         refreshInterval = 0.75f;
         path = new List<Node>();
-
-        // Check for updated path every 0.75 seconds
-        InvokeRepeating("RefreshPath", 0.1f, refreshInterval);
     }
 
     public void SetTarget(Transform t)
@@ -60,52 +57,17 @@ public class WorkerMind : MonoBehaviour
             gotPath = true;
         }
 
-        MakeDecision();
-
         Advance();
     }
 
-    private void IncreaseHunger()
+    public bool isCloseEnough()
     {
-        hunger++;
-    }
-
-    // Figure out what to do next
-    public void MakeDecision()
-    {
-        if (OfficeManager.instance.isBreak)
+        if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
         {
-            if (hunger > 50)
-            {
-                if (OfficeManager.instance.isLunch)
-                {
-                    //Get lunch
-                }
-                else
-                {
-                    // Get a coffee
-                    GetCoffee();
-                }
-            }
-            else
-            {
-                // Sit at desk
-                Work();
-            }
+            return true;
         }
-        else
-        {
-            // Work
-            Work();
-        }
-    }
 
-
-    void RefreshPath()
-    {
-        closeEnough = false;
-        pathFinding.RefreshTarget();
-        path = pathFinding.GetPath();
+        return closeEnough;
     }
 
     // Advance along the path
