@@ -48,11 +48,12 @@ public class GridManager : MonoBehaviour
         //If instance already exists and it's not this:
         else if (Instance != this)
             Destroy(gameObject);
+            
 
         desks = GameObject.FindGameObjectsWithTag("Desk");
 
         // The grid will always have the same size as the plane in the scene
-        cellSize = ground.GetComponent<Renderer>().bounds.size.x / cols;
+        cellSize = ground.GetComponent<Renderer>().bounds.size.x / (cols);
 
         goalCoord = new Coordinate(6, 38);
 

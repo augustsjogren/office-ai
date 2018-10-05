@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    public Material goalMat;
-    public Material pathMat;
     public Material obstacleMat;
     public Material celllMat;
 

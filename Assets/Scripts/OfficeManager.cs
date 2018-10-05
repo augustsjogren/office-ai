@@ -41,7 +41,7 @@ public class OfficeManager : MonoBehaviour
             isBreak = true;
         }
 
-        if(breakTime > 30)
+        if (breakTime > 20)
         {
             isBreak = false;
             breakTime = 0.0f;
