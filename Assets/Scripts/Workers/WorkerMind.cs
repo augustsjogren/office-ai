@@ -13,9 +13,9 @@ public class WorkerMind : MonoBehaviour
     public GameObject homeDesk;
 
     public float step = 1;
-    float refreshInterval;
     bool gotPath;
     bool closeEnough;
+    public bool hasCoffee;
 
     float minimumDistance = 1.5f;
 
@@ -36,7 +36,6 @@ public class WorkerMind : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;
-        refreshInterval = 0.75f;
         path = new List<Node>();
     }
 
@@ -57,7 +56,28 @@ public class WorkerMind : MonoBehaviour
             gotPath = true;
         }
 
+        if (IsAtDesk())
+        {
+            hasCoffee = false;
+        }
+
         Advance();
+    }
+
+    public bool IsAtCoffeeMachine()
+    {
+        if (Vector3.Distance(transform.position, GridManager.Instance.GetCoffeeTarget().position) < minimumDistance)
+        {
+            hasCoffee = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool HasCoffee()
+    {
+        return hasCoffee;
     }
 
     public bool isCloseEnough()
@@ -70,6 +90,18 @@ public class WorkerMind : MonoBehaviour
         return closeEnough;
     }
 
+    public bool IsAtDesk()
+    {
+        var dist = Vector3.Distance(transform.position, homeDesk.transform.position);
+
+        if (dist < minimumDistance)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     // Advance along the path
     void Advance()
     {
@@ -77,6 +109,10 @@ public class WorkerMind : MonoBehaviour
         if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
         {
             closeEnough = true;
+        }
+        else
+        {
+            closeEnough = false;
         }
 
         // Remove tiles already traversed
@@ -103,7 +139,7 @@ public class WorkerMind : MonoBehaviour
     {
         var newCell = GetCellBelow();
 
-        if (GameObject.ReferenceEquals(newCell, currentCell))
+        if (ReferenceEquals(newCell, currentCell))
         {
             // Has not moved
             return false;
@@ -137,6 +173,14 @@ public class WorkerMind : MonoBehaviour
     public void GetCoffee()
     {
         state = 1;
+        pathFinding.RefreshTarget();
+        path = pathFinding.GetPath();
+        //Debug.Log(path[path.Count - 1].gridX + "," + path[path.Count - 1].gridY);
+    }
+
+    public void GoToRestaurant()
+    {
+        state = 2;
         pathFinding.RefreshTarget();
         path = pathFinding.GetPath();
     }

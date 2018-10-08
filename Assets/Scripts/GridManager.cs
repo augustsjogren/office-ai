@@ -11,15 +11,16 @@ public class GridManager : MonoBehaviour
     public Material obstacleMat;
     public Material celllMat;
 
+    public GameObject ground;
+    public GameObject[] desks;
     public GameObject cell;
     private static GameObject[,] cells;
     private static GameObject goal;
+
     private static Coordinate goalCoord;
-    private Coordinate coffeeLocation;
-    public GameObject ground;
-
-    public GameObject[] desks;
-
+    private Coordinate coffeeCoord;
+    private Coordinate restaurantCoord;
+   
     private Node[,] grid;
 
     public int rows;
@@ -57,7 +58,9 @@ public class GridManager : MonoBehaviour
 
         goalCoord = new Coordinate(6, 38);
 
-        coffeeLocation = new Coordinate(1, 1);
+        coffeeCoord = new Coordinate(1, 1);
+
+        restaurantCoord = new Coordinate(1, 1);
 
         cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
 
@@ -80,20 +83,34 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void SetRestaurantLocation(int x, int y)
+    {
+        restaurantCoord = new Coordinate(x, y);
+    }
+
     public Coordinate GetCoffeeLocation()
     {
-        return coffeeLocation;
+        return coffeeCoord;
     }
 
     public void SetCoffeeLocation(int x, int y)
     {
-        coffeeLocation = new Coordinate(x, y);
+        coffeeCoord = new Coordinate(x, y);
     }
 
     public Transform GetCoffeeTarget()
     {
-        return GetCell(coffeeLocation.x, coffeeLocation.y).transform;
+        return GetCell(coffeeCoord.x, coffeeCoord.y).transform;
+    }
 
+    public Coordinate GetRestaurantCoordinate()
+    {
+        return restaurantCoord;
+    }
+
+    public Transform GetRestaurant()
+    {
+        return GetCell(restaurantCoord.x, restaurantCoord.y).transform;
     }
 
     public static Transform GetTarget()

@@ -10,23 +10,61 @@ public class WorkerBehavior : MonoBehaviour
     }
 
     [Task]
-    void SetWorkerColor(float r, float g, float b)
+    void Idle()
     {
-        this.GetComponent<Renderer>().material.color = new Color(r, g, b);
-        Task.current.Succeed();
+        
+    }
+
+    [Task]
+    void StandStill()
+    {
+        print("Idle");
+    }
+
+    [Task]
+    bool IsBreak()
+    {
+        return OfficeManager.instance.isBreak;
+    }
+
+    [Task]
+    bool IsLunch()
+    {
+        //Debug.Log(OfficeManager.instance.isLunch);
+        return OfficeManager.instance.isLunch;
+    }
+
+    [Task]
+    bool HasCoffee()
+    {
+        return mind.HasCoffee();
     }
 
     [Task]
     void GetCoffee()
     {
         mind.GetCoffee();
-        Task.current.Complete(mind.isCloseEnough());
+        Task.current.Complete(!mind.IsAtCoffeeMachine() && !mind.HasCoffee());
+    }
+
+
+    [Task]
+    bool IsAtDesk()
+    {
+        return mind.IsAtDesk();
     }
 
     [Task]
     void Work()
     {
         mind.Work();
-        // Task.current.Complete(mind.isCloseEnough());
+        Task.current.Complete(!mind.IsAtDesk());
+    }
+
+    [Task]
+    void GetLunch()
+    {
+        mind.GoToRestaurant();
+
     }
 }

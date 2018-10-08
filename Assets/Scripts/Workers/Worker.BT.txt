@@ -1,4 +1,28 @@
 tree "Root"
-    sequence
-        GetCoffee()
-        Work()
+	fallback
+		tree("DoStuff")
+		
+
+tree "DoStuff"
+	fallback
+		tree("Break")
+		tree("Lunch")
+		tree("Work")
+
+tree "Idle"
+	StandStill()
+
+tree "Work"
+	Work()
+
+tree "Break"
+	while IsBreak
+		fallback
+			GetCoffee()
+			Work()
+
+tree "Lunch"
+	while IsLunch
+		fallback
+			GetLunch()
+			Work()

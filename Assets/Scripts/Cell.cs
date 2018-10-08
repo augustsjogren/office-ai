@@ -60,6 +60,12 @@ public class Cell : MonoBehaviour
                 walkable = false;
                 GridManager.Instance.SetWalkable(x, y, false);
             }
+
+            if(hit.transform.tag == "Restaurant")
+            {
+                GridManager.Instance.SetRestaurantLocation(x, y);
+                isGoal = true;
+            }
         }
         else
         {

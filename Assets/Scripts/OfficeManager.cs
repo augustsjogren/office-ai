@@ -12,6 +12,7 @@ public class OfficeManager : MonoBehaviour
 
     public bool isBreak;
     public bool isLunch;
+    public bool isMorning = true;
 
     private void Awake()
     {
@@ -38,14 +39,28 @@ public class OfficeManager : MonoBehaviour
 
         if (breakTime > 10)
         {
-            isBreak = true;
+            //isBreak = true;
+            //isLunch = true;
+            //isMorning = false;
         }
 
         if (breakTime > 20)
         {
-            isBreak = false;
+            
+            //isBreak = false;
+            //isLunch = false;
             breakTime = 0.0f;
         }
+    }
+
+    public void ToggleLunch()
+    {
+        isLunch = !isLunch;
+    }
+
+    public void ToggleBreak()
+    {
+        isBreak = !isBreak;
     }
 
     public void CoffeeBreak()
