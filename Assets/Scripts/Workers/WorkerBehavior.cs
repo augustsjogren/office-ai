@@ -24,14 +24,13 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     bool IsBreak()
     {
-        return OfficeManager.instance.isBreak;
+        return OfficeManager.instance.IsBreak();
     }
 
     [Task]
     bool IsLunch()
     {
-        //Debug.Log(OfficeManager.instance.isLunch);
-        return OfficeManager.instance.isLunch;
+        return OfficeManager.instance.IsLunch();
     }
 
     [Task]

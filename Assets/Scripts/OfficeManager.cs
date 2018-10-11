@@ -10,9 +10,13 @@ public class OfficeManager : MonoBehaviour
 
     float breakTime;
 
+    public int lunchTime;
+
     public bool isBreak;
     public bool isLunch;
     public bool isMorning = true;
+
+    public Clock clock;
 
     private void Awake()
     {
@@ -24,6 +28,8 @@ public class OfficeManager : MonoBehaviour
 
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
+
+        clock = GameObject.Find("ClockText").GetComponent<Clock>();
     }
 
 
@@ -46,10 +52,34 @@ public class OfficeManager : MonoBehaviour
 
         if (breakTime > 20)
         {
-            
+
             //isBreak = false;
             //isLunch = false;
             breakTime = 0.0f;
+        }
+    }
+
+    public bool IsBreak()
+    {
+        if (clock.hours >= 9.0f && clock.hours < 10.0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool IsLunch()
+    {
+        if (clock.hours >= 12.0f && clock.hours < 13.30f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

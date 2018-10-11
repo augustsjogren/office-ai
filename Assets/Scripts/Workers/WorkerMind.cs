@@ -27,9 +27,12 @@ public class WorkerMind : MonoBehaviour
 
     List<Node> path;
 
+    Animator animator;
+
     private void Awake()
     {
         pathFinding = GetComponent<PathFinding>();
+        animator = GetComponent<Animator>();
     }
 
     // Use this for initialization
@@ -37,6 +40,7 @@ public class WorkerMind : MonoBehaviour
     {
         initialPosition = transform.position;
         path = pathFinding.GetPath();
+        animator.Play("Movement");
     }
 
     public void SetTarget(Transform t)
@@ -89,7 +93,7 @@ public class WorkerMind : MonoBehaviour
     public bool HasCoffee()
     {
         return hasCoffee;
-    }    
+    }
 
     // Advance along the path
     void Advance()
@@ -98,10 +102,12 @@ public class WorkerMind : MonoBehaviour
         if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
         {
             closeEnough = true;
+            animator.SetFloat("MoveSpeed", 0.0f);
         }
         else
         {
             closeEnough = false;
+            animator.SetFloat("MoveSpeed", 0.5f);
         }
 
         // Remove tiles already traversed
@@ -119,6 +125,10 @@ public class WorkerMind : MonoBehaviour
         // Move towards the next location in the path
         if (path.Count > 0 && !closeEnough && !path[0].isOccupied)
         {
+            Vector3 lTargetDir = nextLocation - transform.position;
+            lTargetDir.y = 0.0f;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.2f);
+
             transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
         }
     }
@@ -148,7 +158,7 @@ public class WorkerMind : MonoBehaviour
 
         return true;
     }
-    
+
     public void Work()
     {
         state = 0;
