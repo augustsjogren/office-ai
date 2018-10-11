@@ -11,6 +11,7 @@ public class Node : IHeapItem<Node>
     public int gCost;
     public int hCost;
     public Node parent;
+    public bool isOccupied;
 
     int heapIndex;
 

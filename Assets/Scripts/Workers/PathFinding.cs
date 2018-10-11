@@ -65,12 +65,12 @@ public class PathFinding : MonoBehaviour
         Stopwatch sw = new Stopwatch();
         sw.Start();
 
-        startCoord = GridManager.GetCoordinate(transform.position);
+        startCoord = GridManager.Instance.GetCoordinate(transform.position);
         Node startNode = new Node(true, transform.position, startCoord.x, startCoord.y);
 
         goalCoord = GridManager.GetGoalCoordinate();
         coffeeCoord = GridManager.Instance.GetCoffeeLocation();
-        deskCoord = GridManager.GetCoordinate(mind.homeDesk.transform.position);
+        deskCoord = GridManager.Instance.GetCoordinate(mind.homeDesk.transform.position);
         restaurantCoord = GridManager.Instance.GetRestaurantCoordinate();
 
         Node targetNode;
@@ -117,7 +117,7 @@ public class PathFinding : MonoBehaviour
 
             foreach (Node neighbour in grid.GetNeighbours(node))
             {
-                if (!neighbour.walkable || closedSet.Contains(neighbour))
+                if (!neighbour.walkable || closedSet.Contains(neighbour) || neighbour.isOccupied)
                 {
                     continue;
                 }

@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
     private static Coordinate goalCoord;
     private Coordinate coffeeCoord;
     private Coordinate restaurantCoord;
-   
+
     private Node[,] grid;
 
     public int rows;
@@ -49,7 +49,6 @@ public class GridManager : MonoBehaviour
         //If instance already exists and it's not this:
         else if (Instance != this)
             Destroy(gameObject);
-            
 
         desks = GameObject.FindGameObjectsWithTag("Desk");
 
@@ -57,9 +56,7 @@ public class GridManager : MonoBehaviour
         cellSize = ground.GetComponent<Renderer>().bounds.size.x / (cols);
 
         goalCoord = new Coordinate(6, 38);
-
         coffeeCoord = new Coordinate(1, 1);
-
         restaurantCoord = new Coordinate(1, 1);
 
         cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
@@ -76,7 +73,44 @@ public class GridManager : MonoBehaviour
         InitializeAllCells();
     }
 
-    void InitializeAllCells(){
+    public void CreateGrid()
+    {
+        float positionX = -cellSize * rows / 2 - spacing + cellSize / 2;
+        float positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
+
+        Vector3 currentPosition = new Vector3();
+
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                currentPosition.x = positionX;
+                currentPosition.z = positionZ;
+
+                GameObject newCell = Instantiate(cell);
+                newCell.transform.SetParent(transform);
+                newCell.transform.position = currentPosition;
+                newCell.gameObject.name = "Cell [" + r + "," + c + "]";
+                cells[r, c] = newCell;
+
+                var cellComp = cells[r, c].GetComponent<Cell>();
+                cellComp.x = r;
+                cellComp.y = c;
+
+                // Create nodes for A*
+                grid[r, c] = new Node(true, newCell.transform.position, r, c);
+                cellComp.walkable = true;
+
+                positionZ += (cellSize + spacing);
+            }
+
+            positionX += (cellSize + spacing);
+            positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
+        }
+    }
+
+    void InitializeAllCells()
+    {
         foreach (var cell in cells)
         {
             cell.GetComponent<Cell>().InitCell();
@@ -122,7 +156,6 @@ public class GridManager : MonoBehaviour
     {
         grid[x, y].walkable = walkable;
 
-
         if (!walkable)
         {
             if (x > 0)
@@ -145,47 +178,10 @@ public class GridManager : MonoBehaviour
                 grid[x, y + 1].walkable = walkable;
             }
         }
-
-    }
-
-    public void CreateGrid()
-    {
-        float positionX = -cellSize * rows / 2 - spacing + cellSize / 2;
-        float positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
-
-        Vector3 currentPosition = new Vector3();
-
-        for (int r = 0; r < rows; r++)
-        {
-            for (int c = 0; c < cols; c++)
-            {
-                currentPosition.x = positionX;
-                currentPosition.z = positionZ;
-
-                GameObject newCell = Instantiate(cell);
-                newCell.transform.SetParent(transform);
-                newCell.transform.position = currentPosition;
-                newCell.gameObject.name = "Cell [" + r + "," + c + "]";
-                cells[r, c] = newCell;
-
-                var cellComp = cells[r, c].GetComponent<Cell>();
-                cellComp.x = r;
-                cellComp.y = c;
-
-                // Create nodes for A*
-                grid[r, c] = new Node(true, newCell.transform.position, r, c);
-                cellComp.walkable = true;
-
-                positionZ += (cellSize + spacing);
-            }
-
-            positionX += (cellSize + spacing);
-            positionZ = -cellSize * cols / 2 - spacing + cellSize / 2;
-        }
     }
 
     // Get grid coordinate from world position
-    public static Coordinate GetCoordinate(Vector3 position)
+    public Coordinate GetCoordinate(Vector3 position)
     {
         float minDistance = 1000;
         int x = 0, y = 0;
@@ -204,6 +200,13 @@ public class GridManager : MonoBehaviour
         }
 
         return new Coordinate(x, y);
+    }
+
+    public Cell GetCellFromPosition(Vector3 position)
+    {
+        var coord = GetCoordinate(position);
+        Cell cell = GetCell(coord.x, coord.y).GetComponent<Cell>();
+        return cell;
     }
 
     public List<Node> GetNeighbours(Node node)
@@ -228,6 +231,16 @@ public class GridManager : MonoBehaviour
         }
 
         return neighbours;
+    }
+
+    public void OccupyNode(int x, int y)
+    {
+        grid[x, y].isOccupied = true;
+    }
+
+    public void ClearNode(int x, int y)
+    {
+        grid[x, y].isOccupied = false;
     }
 
     public static Coordinate GetGoalCoordinate()

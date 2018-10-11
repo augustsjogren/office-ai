@@ -6,6 +6,7 @@ public class Cell : MonoBehaviour
 {
     public Material obstacleMat;
     public Material celllMat;
+    public Material pathMat;
 
     public int x;
     public int y;
@@ -13,6 +14,7 @@ public class Cell : MonoBehaviour
     public bool walkable;
     public bool isPath;
     public bool isGoal;
+    public bool isOccupied;
 
     Renderer rend;
     RaycastHit hit;
@@ -22,18 +24,19 @@ public class Cell : MonoBehaviour
         rend = GetComponent<Renderer>();
     }
 
-    public void InitCell(){
+    public void InitCell()
+    {
 
         CheckForObstacle();
 
-        if (!walkable)
+        if (!walkable || isOccupied)
         {
             rend.material = obstacleMat;
         }
-        //else if (isPath)
-        //{
-        //    rend.material = pathMat;
-        //}
+        else if (isPath)
+        {
+            rend.material = pathMat;
+        }
         else
         {
             rend.material = celllMat;
@@ -41,6 +44,24 @@ public class Cell : MonoBehaviour
 
         //Disable the object to improve performance
         gameObject.SetActive(false);
+    }
+
+    public void UpdateCell()
+    {
+        CheckForObstacle();
+
+        if (!walkable || isOccupied)
+        {
+            rend.material = obstacleMat;
+        }
+        else if (isPath)
+        {
+            rend.material = pathMat;
+        }
+        else
+        {
+            rend.material = celllMat;
+        }
     }
 
     // Check if the tile is walkable, and set its status accordingly
@@ -61,7 +82,7 @@ public class Cell : MonoBehaviour
                 GridManager.Instance.SetWalkable(x, y, false);
             }
 
-            if(hit.transform.tag == "Restaurant")
+            if (hit.transform.tag == "Restaurant")
             {
                 GridManager.Instance.SetRestaurantLocation(x, y);
                 isGoal = true;

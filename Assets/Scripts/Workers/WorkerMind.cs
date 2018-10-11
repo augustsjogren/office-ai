@@ -9,7 +9,7 @@ public class WorkerMind : MonoBehaviour
     public Vector3 nextLocation;
 
     PathFinding pathFinding;
-    GameObject currentCell;
+    Cell currentCell;
     public GameObject homeDesk;
 
     public float step = 1;
@@ -36,7 +36,7 @@ public class WorkerMind : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;
-        path = new List<Node>();
+        path = pathFinding.GetPath();
     }
 
     public void SetTarget(Transform t)
@@ -47,12 +47,11 @@ public class WorkerMind : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // Initialize the worker with working state
         if (GridManager.isInitialized && !gotPath)
         {
             Work();
-            currentCell = GetCellBelow();
+            currentCell = GridManager.Instance.GetCellFromPosition(transform.position);
             gotPath = true;
         }
 
@@ -75,21 +74,6 @@ public class WorkerMind : MonoBehaviour
         return false;
     }
 
-    public bool HasCoffee()
-    {
-        return hasCoffee;
-    }
-
-    public bool isCloseEnough()
-    {
-        if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
-        {
-            return true;
-        }
-
-        return closeEnough;
-    }
-
     public bool IsAtDesk()
     {
         var dist = Vector3.Distance(transform.position, homeDesk.transform.position);
@@ -101,6 +85,11 @@ public class WorkerMind : MonoBehaviour
 
         return false;
     }
+
+    public bool HasCoffee()
+    {
+        return hasCoffee;
+    }    
 
     // Advance along the path
     void Advance()
@@ -128,41 +117,38 @@ public class WorkerMind : MonoBehaviour
         }
 
         // Move towards the next location in the path
-        if (path.Count > 0 && !closeEnough)
+        if (path.Count > 0 && !closeEnough && !path[0].isOccupied)
         {
             transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
         }
     }
 
-    // Has the worker moved to a new tile? In that case remove the previous tile from the worker path
+    // Has the worker moved to a new tile?
     bool HasMoved()
     {
-        var newCell = GetCellBelow();
+        Cell newCell = GridManager.Instance.GetCellFromPosition(transform.position);
 
-        if (ReferenceEquals(newCell, currentCell))
+        if (ReferenceEquals(currentCell, newCell))
         {
-            // Has not moved
+            // Still at the same cell
             return false;
         }
 
+        // Occupy new cell and node and de-occupy previous cell and node
+        newCell.isOccupied = true;
+        GridManager.Instance.OccupyNode(newCell.x, newCell.y);
+
+        currentCell.isOccupied = false;
+        GridManager.Instance.ClearNode(currentCell.x, currentCell.y);
+
+        newCell.UpdateCell();
+        currentCell.UpdateCell();
+
         currentCell = newCell;
+
         return true;
     }
-
-    // Get the object underneath the worker
-    GameObject GetCellBelow()
-    {
-        RaycastHit hit;
-        GameObject GO = null;
-
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
-        {
-            GO = hit.transform.gameObject;
-        }
-
-        return GO;
-    }
-
+    
     public void Work()
     {
         state = 0;
@@ -175,7 +161,6 @@ public class WorkerMind : MonoBehaviour
         state = 1;
         pathFinding.RefreshTarget();
         path = pathFinding.GetPath();
-        //Debug.Log(path[path.Count - 1].gridX + "," + path[path.Count - 1].gridY);
     }
 
     public void GoToRestaurant()
