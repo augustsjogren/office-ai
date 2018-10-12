@@ -127,7 +127,7 @@ public class WorkerMind : MonoBehaviour
         {
             Vector3 lTargetDir = nextLocation - transform.position;
             lTargetDir.y = 0.0f;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.2f);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.6f);
 
             transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
         }
