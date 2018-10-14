@@ -56,6 +56,7 @@ public class WorkerMind : MonoBehaviour
         {
             Work();
             currentCell = GridManager.Instance.GetCellFromPosition(transform.position);
+            pathFinding.RefreshTarget();
             gotPath = true;
         }
 
@@ -110,38 +111,48 @@ public class WorkerMind : MonoBehaviour
     // Advance along the path
     void Advance()
     {
-        // Stop moving when close enough
-        if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
+        if (path != null)
         {
-            closeEnough = true;
-            animator.SetFloat("MoveSpeed", 0.0f);
-        }
-        else
-        {
-            closeEnough = false;
-            animator.SetFloat("MoveSpeed", 0.5f);
-        }
+            // Stop moving when close enough
+            if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
+            {
+                closeEnough = true;
+                animator.SetFloat("MoveSpeed", 0.0f);
+            }
+            else
+            {
+                closeEnough = false;
+                animator.SetFloat("MoveSpeed", 0.5f);
+            }
 
-        // Remove tiles already traversed
-        if (HasMoved())
-        {
-            path.RemoveAt(0);
-        }
+            // Remove tiles already traversed
+            if (HasMoved())
+            {
+                path.RemoveAt(0);
+                //pathFinding.RefreshTarget();
+            }
 
-        if (GridManager.isInitialized && path.Count > 0)
-        {
-            nextLocation = path[0].worldPosition;
-            nextLocation.y = initialPosition.y;
-        }
+            if (GridManager.isInitialized && path.Count > 0)
+            {
+                var wayPts = pathFinding.GetWaypoints();
 
-        // Move towards the next location in the path
-        if (path.Count > 0 && !closeEnough && !path[0].isOccupied)
-        {
-            Vector3 lTargetDir = nextLocation - transform.position;
-            lTargetDir.y = 0.0f;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.6f);
+                if (wayPts.Count > 1)
+                {
+                    nextLocation = wayPts[1];
+                    nextLocation.y = initialPosition.y;
+                }               
+            }
 
-            transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
+            // Move towards the next location in the path
+            if (path.Count > 0 && !closeEnough && !path[0].isOccupied)
+            {
+                Vector3 lTargetDir = nextLocation - transform.position;
+                lTargetDir.y = 0.0f;
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.6f);
+
+                transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
+            }
+
         }
     }
 

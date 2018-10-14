@@ -61,11 +61,10 @@ public class PathFinding : MonoBehaviour
 
     void FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        // Get start and target node
-
         Stopwatch sw = new Stopwatch();
         sw.Start();
 
+        // Get start and target node
         startCoord = GridManager.Instance.GetCoordinate(transform.position);
         Node startNode = new Node(true, transform.position, startCoord.x, startCoord.y);
 
@@ -157,66 +156,113 @@ public class PathFinding : MonoBehaviour
             GridManager.Instance.SetCellToPath(node.gridX, node.gridY);
         }
 
+        SmoothPath();
+
         hasRetraced = true;
     }
 
+    // Smooth the a* path to be more natural, remove unneccesary waypoints if there is a line of sight
     void SmoothPath()
     {
+        PathToWaypoints();
+
         int pathIndex = 0;
 
         //checkPoint = starting point of path
-        var checkPoint = path[pathIndex];
+        Vector3 checkPoint = wayPoints[pathIndex];
+        Vector3 currentPoint;
 
         pathIndex++;
 
-        //currentPoint = next point in path
-        var currentPoint = path[pathIndex];
-
-        //while (currentPoint->next != NULL)
-        //            if Walkable(checkPoint, currentPoint->next)
-        //            // Make a straight path between those points:
-        //temp = currentPoint
-        //currentPoint = currentPoint->next
-        //delete temp from the path
-        //else
-        //checkPoint = currentPoint
-        //currentPoint = currentPoint->next
-
-        while (path[pathIndex + 1] != null)
+        if (wayPoints.Count > pathIndex)
         {
-            //if()
+            //currentPoint = next point in path
+            currentPoint = wayPoints[pathIndex];
+        }
+        else
+        {
+            currentPoint = checkPoint;
+        }
+
+        if (wayPoints.Count > 0)
+        {
+            while (wayPoints.Count > pathIndex + 1)
+            {
+                if (Walkable(checkPoint, wayPoints[pathIndex + 1]))
+                {
+                    var temp = currentPoint;
+                    currentPoint = wayPoints[pathIndex + 1];
+                    wayPoints.RemoveAt(pathIndex);
+                    path.RemoveAt(pathIndex);
+                }
+                else
+                {
+                    checkPoint = currentPoint;
+                    currentPoint = wayPoints[pathIndex];
+                    pathIndex++;
+                }
+            }
         }
     }
 
-    void CalculateWaypoints()
+    // Convert path of nodes to waypoints (Vector3)
+    List<Vector3> PathToWaypoints()
     {
         wayPoints = new List<Vector3>();
-        foreach (var node in path)
+
+        if (path != null)
         {
-            wayPoints.Add(node.worldPosition);
+            foreach (var node in path)
+            {
+                wayPoints.Add(node.worldPosition);
+            }
         }
+
+        return wayPoints;
     }
 
     public List<Vector3> GetWaypoints()
     {
-        CalculateWaypoints();
         return wayPoints;
     }
 
-    bool Walkable()
+    // Check if the straight line between a and b is walkable (no obstacles crossing the line)
+    bool Walkable(Vector3 a, Vector3 b)
     {
+        float granularity = GridManager.Instance.cellSize / 5.0f;
 
-        float sampleInterval = 1.0f;
+        Vector3 direction = Vector3.Normalize(a - b);
 
-        RaycastHit hit;
+        Vector3 samplePoint = a;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity))
+        while (Vector3.Distance(samplePoint, b) > granularity * 1.5)
         {
-            return true;
+            RaycastHit hit;
+            GameObject sampleCell;
+
+            if (Physics.Raycast(samplePoint + Vector3.up * 5, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+            {
+                if (hit.transform.gameObject.tag == "Cell")
+                {
+                    sampleCell = hit.transform.gameObject;
+                }
+                else
+                {
+                    // Hit sometheing that is not a cell
+                    return false;
+                }
+
+                if (!sampleCell.GetComponent<Cell>().walkable)
+                {
+                    // Hit an unwalkable cell
+                    return false;
+                }
+            }
+
+            samplePoint = Vector3.MoveTowards(samplePoint, b, granularity);
         }
 
-        return false;
-
+        return true;
     }
 
     public List<Node> GetPath()
