@@ -12,24 +12,24 @@ public class Wall : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    //void Update()
+    //{
 
-		// RaycastHit hit;
+    //    RaycastHit hit;
 
-        // if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
-        // {
-		// 	var hitObj = hit.transform.gameObject;
-		// 	print(hitObj.name);
+    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+    //    {
+    //        var hitObj = hit.transform.gameObject;
+    //        print(hitObj.name);
 
-		// 	if (hitObj.layer == 10)
-        //     {
-				
-		// 		var hitCell = hitObj.GetComponent<Cell>();
-        //         hitCell.walkable = false;
-        //         GridManager.Instance.SetWalkable(hitCell.x, hitCell.y, false);
-        //     }
-        // }
+    //        if (hitObj.layer == 10)
+    //        {
 
-    }
+    //            var hitCell = hitObj.GetComponent<Cell>();
+    //            hitCell.walkable = false;
+    //            GridManager.Instance.SetWalkable(hitCell.x, hitCell.y, false);
+    //        }
+    //    }
+
+    //}
 }

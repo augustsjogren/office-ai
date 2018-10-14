@@ -16,6 +16,7 @@ public class PathFinding : MonoBehaviour
     Coordinate restaurantCoord;
 
     List<Node> path;
+    List<Vector3> wayPoints;
 
     bool hasRetraced;
 
@@ -157,6 +158,65 @@ public class PathFinding : MonoBehaviour
         }
 
         hasRetraced = true;
+    }
+
+    void SmoothPath()
+    {
+        int pathIndex = 0;
+
+        //checkPoint = starting point of path
+        var checkPoint = path[pathIndex];
+
+        pathIndex++;
+
+        //currentPoint = next point in path
+        var currentPoint = path[pathIndex];
+
+        //while (currentPoint->next != NULL)
+        //            if Walkable(checkPoint, currentPoint->next)
+        //            // Make a straight path between those points:
+        //temp = currentPoint
+        //currentPoint = currentPoint->next
+        //delete temp from the path
+        //else
+        //checkPoint = currentPoint
+        //currentPoint = currentPoint->next
+
+        while (path[pathIndex + 1] != null)
+        {
+            //if()
+        }
+    }
+
+    void CalculateWaypoints()
+    {
+        wayPoints = new List<Vector3>();
+        foreach (var node in path)
+        {
+            wayPoints.Add(node.worldPosition);
+        }
+    }
+
+    public List<Vector3> GetWaypoints()
+    {
+        CalculateWaypoints();
+        return wayPoints;
+    }
+
+    bool Walkable()
+    {
+
+        float sampleInterval = 1.0f;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity))
+        {
+            return true;
+        }
+
+        return false;
+
     }
 
     public List<Node> GetPath()

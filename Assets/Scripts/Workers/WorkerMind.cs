@@ -65,6 +65,18 @@ public class WorkerMind : MonoBehaviour
         }
 
         Advance();
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Only draw debug lines when in play mode
+        if (Application.isPlaying)
+        {
+            DrawPath();
+        }
+
+
     }
 
     public bool IsAtCoffeeMachine()
@@ -178,5 +190,34 @@ public class WorkerMind : MonoBehaviour
         state = 2;
         pathFinding.RefreshTarget();
         path = pathFinding.GetPath();
+    }
+
+    // Function for drawing the path (Debug)
+    void DrawPath()
+    {
+        Vector3 from = transform.position;
+        Vector3 to;
+
+        if (pathFinding.GetWaypoints().Count > 0)
+        {
+            foreach (var wayPoint in pathFinding.GetWaypoints())
+            {
+                to = wayPoint;
+                to.y = 0.5f;
+                from.y = 0.5f;
+
+                if (to != null)
+                {
+                    // Draws a blue line
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawLine(from, to);
+                }
+
+                // Mark the waypoints
+                Gizmos.DrawCube(from, new Vector3(0.1f, 0.1f, 0.1f));
+
+                from = wayPoint;
+            }
+        }
     }
 }

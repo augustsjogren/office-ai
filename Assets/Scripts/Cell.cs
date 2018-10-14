@@ -43,7 +43,7 @@ public class Cell : MonoBehaviour
         }
 
         //Disable the object to improve performance
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     public void UpdateCell()
