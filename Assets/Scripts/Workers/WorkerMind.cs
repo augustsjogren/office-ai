@@ -4,22 +4,17 @@ using UnityEngine;
 
 public class WorkerMind : MonoBehaviour
 {
-    private Vector3 initialPosition;
     public Transform target;
-    public Vector3 nextLocation;
-
+    
     PathFinding pathFinding;
+    WorkerMovement workerMovement;
     Cell currentCell;
-    public GameObject homeDesk;
 
-    public float step = 1;
     bool gotPath;
-    bool closeEnough;
+    
     public bool hasCoffee;
 
-    public bool shouldRefresh;
-
-    float minimumDistance = 1.5f;
+    public bool shouldRefresh;    
 
     // Variable for deciding what to do
     // 0 is idle
@@ -34,13 +29,14 @@ public class WorkerMind : MonoBehaviour
     private void Awake()
     {
         pathFinding = GetComponent<PathFinding>();
+        workerMovement = GetComponent<WorkerMovement>();
         animator = GetComponent<Animator>();
     }
 
     // Use this for initialization
     void Start()
     {
-        initialPosition = transform.position;
+       
         path = pathFinding.GetPath();
         //animator.Play("Movement");
 
@@ -63,12 +59,12 @@ public class WorkerMind : MonoBehaviour
             gotPath = true;
         }
 
-        if (IsAtDesk())
+        if (workerMovement.IsAtDesk())
         {
             hasCoffee = false;
         }
 
-        Advance();
+        workerMovement.Advance();
     }
 
     private void OnDrawGizmosSelected()
@@ -80,97 +76,7 @@ public class WorkerMind : MonoBehaviour
         }
     }
 
-    public bool IsAtCoffeeMachine()
-    {
-        if (Vector3.Distance(transform.position, GridManager.Instance.GetCoffeeTarget().position) < minimumDistance)
-        {
-            hasCoffee = true;
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool IsAtDesk()
-    {
-        var dist = Vector3.Distance(transform.position, homeDesk.transform.position);
-
-        if (dist < minimumDistance)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool HasCoffee()
-    {
-        return hasCoffee;
-    }
-
-    // Advance along the path
-    void Advance()
-    {
-        if (pathFinding.GetWaypoints() != null)
-        {
-            // Stop moving when close enough
-            if (pathFinding.GetWaypoints().Count > 0 && Vector3.Distance(transform.position, pathFinding.GetWaypoints()[pathFinding.GetWaypoints().Count - 1]) < minimumDistance)
-            {
-                closeEnough = true;
-                //animator.SetFloat("MoveSpeed", 0.0f);
-            }
-            else
-            {
-                closeEnough = false;
-                //animator.SetFloat("MoveSpeed", 0.5f);
-            }
-
-            if (IsAtWaypoint())
-            {
-                // Remove previous waypoint
-                pathFinding.RemoveWaypoint();
-            }
-
-            if (GridManager.isInitialized && pathFinding.GetWaypoints().Count > 0)
-            {
-                var wayPts = pathFinding.GetWaypoints();
-
-                if (wayPts.Count > 0)
-                {
-                    nextLocation = wayPts[0];
-                    nextLocation.y = initialPosition.y;
-                }
-            }
-
-            // Move towards the next location in the path
-            if (pathFinding.GetWaypoints().Count > 0 && !closeEnough)
-            {
-                Vector3 lTargetDir = nextLocation - transform.position;
-                lTargetDir.y = 0.0f;
-
-                // Prevent console output stating the obvious
-                if (lTargetDir != Vector3.zero)
-                {
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.6f);
-                }
-
-                transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
-            }
-        }
-    }
-
-    // Has the agent has arrived at the next waypoint?
-    bool IsAtWaypoint()
-    {
-        if (pathFinding.GetWaypoints().Count > 0)
-        {
-            if (Mathf.Abs(transform.position.x - pathFinding.GetWaypoints()[0].x) < 0.01 && Mathf.Abs(transform.position.z - pathFinding.GetWaypoints()[0].z) < 0.01)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    
 
     public void Work()
     {
@@ -228,7 +134,7 @@ public class WorkerMind : MonoBehaviour
                 Gizmos.DrawCube(from, new Vector3(0.2f, 0.1f, 0.2f));
 
                 Gizmos.color = Color.red;
-                Gizmos.DrawCube(nextLocation, new Vector3(0.1f, 0.1f, 0.1f));
+                Gizmos.DrawCube(workerMovement.nextLocation, new Vector3(0.1f, 0.1f, 0.1f));
 
                 from = wayPoint;
             }

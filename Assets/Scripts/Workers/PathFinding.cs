@@ -8,6 +8,7 @@ public class PathFinding : MonoBehaviour
     public Transform seeker, target;
     GridManager grid;
     WorkerMind mind;
+    WorkerMovement movement;
 
     Coordinate startCoord;
     Coordinate goalCoord;
@@ -37,6 +38,7 @@ public class PathFinding : MonoBehaviour
     {
         grid = GameObject.Find("Grid").GetComponent<GridManager>();
         mind = GetComponent<WorkerMind>();
+        movement = GetComponent<WorkerMovement>();
     }
 
     private void Start()
@@ -70,7 +72,7 @@ public class PathFinding : MonoBehaviour
 
         goalCoord = GridManager.GetGoalCoordinate();
         coffeeCoord = GridManager.Instance.GetCoffeeLocation();
-        deskCoord = GridManager.Instance.GetCoordinate(mind.homeDesk.transform.position);
+        deskCoord = GridManager.Instance.GetCoordinate(movement.homeDesk.transform.position);
         restaurantCoord = GridManager.Instance.GetRestaurantCoordinate();
 
         Node targetNode;
@@ -79,7 +81,7 @@ public class PathFinding : MonoBehaviour
         {
             case 0:
                 // Work
-                targetNode = new Node(true, mind.homeDesk.transform.position, deskCoord.x, deskCoord.y);
+                targetNode = new Node(true, movement.transform.position, deskCoord.x, deskCoord.y);
                 break;
 
             case 1:

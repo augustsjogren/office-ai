@@ -128,13 +128,14 @@ GameObject:
   - component: {fileID: 27719450}
   - component: {fileID: 27719456}
   - component: {fileID: 27719455}
+  - component: {fileID: 27719457}
   m_Layer: 0
   m_Name: BlueWorker
   m_TagString: Worker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &27719449
 Transform:
   m_ObjectHideFlags: 0
@@ -173,9 +174,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 413427955}
-  step: 0.14
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -267,6 +265,20 @@ MonoBehaviour:
     breakPointStatuses: 
     collapsedLines: 
     btScript: 
+--- !u!114 &27719457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 27719448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 413427955}
+  step: 0.1
 --- !u!1 &41024495
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,6 +484,7 @@ GameObject:
   - component: {fileID: 83547615}
   - component: {fileID: 83547614}
   - component: {fileID: 83547613}
+  - component: {fileID: 83547621}
   m_Layer: 0
   m_Name: MaleFreeSimpleMovement1 (3)
   m_TagString: Untagged
@@ -552,9 +565,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 413427955}
-  step: 0.11
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -626,6 +636,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &83547621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 83547611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 0}
+  step: 1
 --- !u!1 &87619294
 GameObject:
   m_ObjectHideFlags: 0
@@ -2462,6 +2486,7 @@ GameObject:
   - component: {fileID: 502107189}
   - component: {fileID: 502107195}
   - component: {fileID: 502107188}
+  - component: {fileID: 502107196}
   m_Layer: 0
   m_Name: MaleFreeSimpleMovement1
   m_TagString: Untagged
@@ -2531,9 +2556,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 828327078}
-  step: 0.11
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -2616,6 +2638,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7be509f771ac34186a9248d7ce7a66cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &502107196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 502107186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 0}
+  step: 1
 --- !u!1 &509001608
 GameObject:
   m_ObjectHideFlags: 0
@@ -2957,6 +2993,7 @@ GameObject:
   - component: {fileID: 554139766}
   - component: {fileID: 554139765}
   - component: {fileID: 554139764}
+  - component: {fileID: 554139772}
   m_Layer: 0
   m_Name: MaleFreeSimpleMovement1 (2)
   m_TagString: Untagged
@@ -3037,9 +3074,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 230444294}
-  step: 0.11
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -3111,6 +3145,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &554139772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 554139762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 0}
+  step: 1
 --- !u!1 &590548703
 GameObject:
   m_ObjectHideFlags: 0
@@ -4794,6 +4842,7 @@ GameObject:
   - component: {fileID: 903597490}
   - component: {fileID: 903597496}
   - component: {fileID: 903597495}
+  - component: {fileID: 903597497}
   m_Layer: 0
   m_Name: GreenWorker
   m_TagString: Worker
@@ -4839,9 +4888,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 230444294}
-  step: 0.1
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -4933,6 +4979,20 @@ MonoBehaviour:
     breakPointStatuses: 
     collapsedLines: 
     btScript: 
+--- !u!114 &903597497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 903597488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 230444294}
+  step: 0.1
 --- !u!1 &920087773
 GameObject:
   m_ObjectHideFlags: 0
@@ -7258,6 +7318,7 @@ GameObject:
   - component: {fileID: 1492640804}
   - component: {fileID: 1492640803}
   - component: {fileID: 1492640807}
+  - component: {fileID: 1492640811}
   - component: {fileID: 1492640808}
   - component: {fileID: 1492640810}
   - component: {fileID: 1492640809}
@@ -7267,7 +7328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &1492640803
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -7348,9 +7409,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 828327078}
-  step: 0.1
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -7400,6 +7458,20 @@ MonoBehaviour:
     breakPointStatuses: 
     collapsedLines: 
     btScript: 
+--- !u!114 &1492640811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1492640802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 828327078}
+  step: 0.1
 --- !u!1 &1524223303
 GameObject:
   m_ObjectHideFlags: 0
@@ -7753,13 +7825,14 @@ GameObject:
   - component: {fileID: 1632216369}
   - component: {fileID: 1632216375}
   - component: {fileID: 1632216376}
+  - component: {fileID: 1632216377}
   m_Layer: 0
   m_Name: PurpleWorker
   m_TagString: Worker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1632216369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7785,9 +7858,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 1361777303}
-  step: 0.1
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -7892,6 +7962,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7be509f771ac34186a9248d7ce7a66cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1632216377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632216368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 1361777303}
+  step: 0.1
 --- !u!1 &1639955223
 GameObject:
   m_ObjectHideFlags: 0
@@ -8675,6 +8759,7 @@ GameObject:
   - component: {fileID: 1844647055}
   - component: {fileID: 1844647054}
   - component: {fileID: 1844647053}
+  - component: {fileID: 1844647061}
   m_Layer: 0
   m_Name: MaleFreeSimpleMovement1 (1)
   m_TagString: Untagged
@@ -8755,9 +8840,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  nextLocation: {x: 0, y: 0, z: 0}
-  homeDesk: {fileID: 1361777303}
-  step: 0.11
   hasCoffee: 0
   shouldRefresh: 0
   state: 0
@@ -8829,6 +8911,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1844647061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1844647051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff7288fff1b8f4fa736badad1ad052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLocation: {x: 0, y: 0, z: 0}
+  homeDesk: {fileID: 0}
+  step: 1
 --- !u!1 &1852275650
 GameObject:
   m_ObjectHideFlags: 0

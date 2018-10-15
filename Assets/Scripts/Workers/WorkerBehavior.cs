@@ -4,9 +4,12 @@ using Panda;
 public class WorkerBehavior : MonoBehaviour
 {
     WorkerMind mind;
+    WorkerMovement movement;
+
     private void Awake()
     {
         mind = GetComponent<WorkerMind>();
+        movement = GetComponent<WorkerMovement>();
     }
 
     [Task]
@@ -36,7 +39,7 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     bool HasCoffee()
     {
-        return mind.HasCoffee();
+        return movement.HasCoffee();
     }
 
     [Task]
@@ -49,7 +52,7 @@ public class WorkerBehavior : MonoBehaviour
 
         mind.GetCoffee();
 
-        if(mind.IsAtCoffeeMachine() && mind.HasCoffee())
+        if(movement.IsAtCoffeeMachine() && movement.HasCoffee())
         {
             Task.current.Succeed();
         }
@@ -58,7 +61,7 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     bool IsAtDesk()
     {
-        return mind.IsAtDesk();
+        return movement.IsAtDesk();
     }
 
     [Task]
@@ -70,7 +73,7 @@ public class WorkerBehavior : MonoBehaviour
         }
         mind.Work();
 
-        if (mind.IsAtDesk())
+        if (movement.IsAtDesk())
         {
             Task.current.Succeed();
         }
