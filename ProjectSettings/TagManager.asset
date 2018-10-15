@@ -9,6 +9,7 @@ TagManager:
   - Worker
   - Restaurant
   - Cell
+  - CoffeeMachine
   layers:
   - Default
   - TransparentFX

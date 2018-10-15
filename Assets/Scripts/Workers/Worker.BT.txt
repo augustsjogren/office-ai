@@ -7,8 +7,16 @@ tree "DoStuff"
 	fallback
 		tree("Break")
 		tree("Lunch")
+		tree("FulfillNeeds")
 		tree("Work")
 
+
+tree "FulfillNeeds"
+	sequence
+		GetCoffee()
+		GetSnack()
+		GetLunch()
+		
 tree "Idle"
 	StandStill()
 
@@ -18,7 +26,9 @@ tree "Work"
 tree "Break"
 	while IsBreak
 		sequence
-			GetCoffee()
+			fallback
+				GetCoffee()
+				GetSnack()
 			Work()
 
 tree "Lunch"

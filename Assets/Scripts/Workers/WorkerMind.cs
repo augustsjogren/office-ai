@@ -5,42 +5,35 @@ using UnityEngine;
 public class WorkerMind : MonoBehaviour
 {
     public Transform target;
-    
+
     PathFinding pathFinding;
     WorkerMovement workerMovement;
     Cell currentCell;
 
     bool gotPath;
-    
     public bool hasCoffee;
-
-    public bool shouldRefresh;    
+    public bool hasSnack;
+    public bool shouldRefresh;
+    public bool coffeeDrinker;
+    public int hunger;
+    public int thirst;
 
     // Variable for deciding what to do
     // 0 is idle
     public int state;
 
-    public int hunger;
-
     List<Node> path;
-
-    Animator animator;
 
     private void Awake()
     {
         pathFinding = GetComponent<PathFinding>();
         workerMovement = GetComponent<WorkerMovement>();
-        animator = GetComponent<Animator>();
     }
 
     // Use this for initialization
     void Start()
     {
-       
         path = pathFinding.GetPath();
-        //animator.Play("Movement");
-
-        //shouldRefresh = true;
     }
 
     public void SetTarget(Transform t)
@@ -62,6 +55,7 @@ public class WorkerMind : MonoBehaviour
         if (workerMovement.IsAtDesk())
         {
             hasCoffee = false;
+            hasSnack = false;
         }
 
         workerMovement.Advance();
@@ -75,8 +69,6 @@ public class WorkerMind : MonoBehaviour
             DrawPath();
         }
     }
-
-    
 
     public void Work()
     {
@@ -96,6 +88,12 @@ public class WorkerMind : MonoBehaviour
         RefreshPathIfNeeded();
     }
 
+    public void GetSnack()
+    {
+        state = 3;
+        RefreshPathIfNeeded();
+    }
+
     // Only refresh the path if needed to avoid jittering and performance issues
     public void RefreshPathIfNeeded()
     {
@@ -111,8 +109,6 @@ public class WorkerMind : MonoBehaviour
     void DrawPath()
     {
         Vector3 from = transform.position;
-        //Vector3 from = pathFinding.GetWaypoints()[0];
-
         Vector3 to;
 
         if (pathFinding.GetWaypoints().Count > 0)

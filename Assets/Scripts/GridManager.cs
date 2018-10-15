@@ -19,7 +19,10 @@ public class GridManager : MonoBehaviour
 
     private static Coordinate goalCoord;
     private Coordinate coffeeCoord;
+    private Coordinate snackCoord;
     private Coordinate restaurantCoord;
+
+    public List<Coordinate> coffeeCoords;
 
     private Node[,] grid;
 
@@ -51,6 +54,7 @@ public class GridManager : MonoBehaviour
             Destroy(gameObject);
 
         desks = GameObject.FindGameObjectsWithTag("Desk");
+        coffeeCoords = new List<Coordinate>();
 
         // The grid will always have the same size as the plane in the scene
         cellSize = ground.GetComponent<Renderer>().bounds.size.x / (cols);
@@ -58,6 +62,7 @@ public class GridManager : MonoBehaviour
         goalCoord = new Coordinate(6, 38);
         coffeeCoord = new Coordinate(1, 1);
         restaurantCoord = new Coordinate(1, 1);
+        snackCoord = new Coordinate(1, 1);
 
         cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
 
@@ -117,11 +122,6 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void SetRestaurantLocation(int x, int y)
-    {
-        restaurantCoord = new Coordinate(x, y);
-    }
-
     public Coordinate GetCoffeeLocation()
     {
         return coffeeCoord;
@@ -132,9 +132,9 @@ public class GridManager : MonoBehaviour
         coffeeCoord = new Coordinate(x, y);
     }
 
-    public Transform GetCoffeeTarget()
+    public Vector3 GetCoffeeTarget()
     {
-        return GetCell(coffeeCoord.x, coffeeCoord.y).transform;
+        return GetCell(coffeeCoord.x, coffeeCoord.y).transform.position;
     }
 
     public Coordinate GetRestaurantCoordinate()
@@ -142,9 +142,29 @@ public class GridManager : MonoBehaviour
         return restaurantCoord;
     }
 
-    public Transform GetRestaurant()
+    public void SetRestaurantLocation(int x, int y)
     {
-        return GetCell(restaurantCoord.x, restaurantCoord.y).transform;
+        restaurantCoord = new Coordinate(x, y);
+    }
+
+    public Vector3 GetRestaurantPosition()
+    {
+        return GetCell(restaurantCoord.x, restaurantCoord.y).transform.position;
+    }
+
+    public Vector3 GetSnackPosition()
+    {
+        return GetCell(snackCoord.x, snackCoord.y).transform.position;
+    }
+
+    public Coordinate GetSnackCoordinate()
+    {
+        return snackCoord;
+    }
+
+    public void SetSnackLocation(int x, int y)
+    {
+        snackCoord = new Coordinate(x, y);
     }
 
     public static Transform GetTarget()

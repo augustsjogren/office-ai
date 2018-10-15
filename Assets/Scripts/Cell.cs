@@ -70,10 +70,20 @@ public class Cell : MonoBehaviour
         // An obstacle is placed in this location, make the cell unwalkable.
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity))
         {
-            if (hit.transform.gameObject.name == "CoffeeMachine")
+            if (hit.transform.gameObject.tag == "CoffeeMachine")
             {
-                isGoal = true;
                 GridManager.Instance.SetCoffeeLocation(x, y);
+
+                Coordinate newCoord = (new Coordinate(x, y));
+
+                if (!GridManager.Instance.coffeeCoords.Contains(newCoord))
+                {
+                    GridManager.Instance.coffeeCoords.Add(newCoord);
+                }
+            }
+            else if (hit.transform.gameObject.name == "SnackMachine")
+            {
+                GridManager.Instance.SetSnackLocation(x, y);
             }
 
             if (hit.transform.gameObject.layer == 9)
@@ -85,7 +95,6 @@ public class Cell : MonoBehaviour
             if (hit.transform.tag == "Restaurant")
             {
                 GridManager.Instance.SetRestaurantLocation(x, y);
-                isGoal = true;
             }
         }
         else

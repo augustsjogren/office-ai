@@ -7,7 +7,7 @@ public class WorkerMovement : MonoBehaviour
     PathFinding pathFinding;
     WorkerMind workerMind;
 
-    bool closeEnough;
+    public bool closeEnough;
     float minimumDistance = 1.5f;
 
     public Vector3 nextLocation;
@@ -15,24 +15,26 @@ public class WorkerMovement : MonoBehaviour
 
     public GameObject homeDesk;
 
+    Animator animator;
+
     public float step = 1;
 
     private void Awake()
     {
         pathFinding = GetComponent<PathFinding>();
         workerMind = GetComponent<WorkerMind>();
+        animator = GetComponent<Animator>();
     }
 
     // Use this for initialization
     void Start()
     {
         initialPosition = transform.position;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-
+        if (animator)
+        {
+            animator.Play("Movement");
+        }
     }
 
     // Advance along the path
@@ -40,16 +42,24 @@ public class WorkerMovement : MonoBehaviour
     {
         if (pathFinding.GetWaypoints() != null)
         {
+
+            float moveSpeed = 0.0f;
+
             // Stop moving when close enough
             if (pathFinding.GetWaypoints().Count > 0 && Vector3.Distance(transform.position, pathFinding.GetWaypoints()[pathFinding.GetWaypoints().Count - 1]) < minimumDistance)
             {
                 closeEnough = true;
-                //animator.SetFloat("MoveSpeed", 0.0f);
+                moveSpeed = 0.0f;
             }
             else
             {
                 closeEnough = false;
-                //animator.SetFloat("MoveSpeed", 0.5f);
+                moveSpeed = 0.5f;
+            }
+
+            if (animator)
+            {
+                animator.SetFloat("MoveSpeed", moveSpeed);
             }
 
             if (IsAtWaypoint())
@@ -99,17 +109,6 @@ public class WorkerMovement : MonoBehaviour
         return false;
     }
 
-    public bool IsAtCoffeeMachine()
-    {
-        if (Vector3.Distance(transform.position, GridManager.Instance.GetCoffeeTarget().position) < minimumDistance)
-        {
-            workerMind.hasCoffee = true;
-            return true;
-        }
-
-        return false;
-    }
-
     public bool IsAtDesk()
     {
         var dist = Vector3.Distance(transform.position, homeDesk.transform.position);
@@ -122,8 +121,23 @@ public class WorkerMovement : MonoBehaviour
         return false;
     }
 
-    public bool HasCoffee()
+    public bool IsAtCoffeeMachine()
     {
-        return workerMind.hasCoffee;
+        if (Vector3.Distance(transform.position, GridManager.Instance.GetCoffeeTarget()) < 2.0f)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsAtSnackMachine()
+    {
+        if (Vector3.Distance(transform.position, GridManager.Instance.GetSnackPosition()) < 2.0f)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -13,15 +13,15 @@ public class WorkerBehavior : MonoBehaviour
     }
 
     [Task]
-    void Idle()
-    {
-        
-    }
-
-    [Task]
     void StandStill()
     {
         print("Idle");
+    }
+
+    [Task]
+    bool IsHungry()
+    {
+        return mind.hunger > 50;
     }
 
     [Task]
@@ -36,15 +36,19 @@ public class WorkerBehavior : MonoBehaviour
         return OfficeManager.instance.IsLunch();
     }
 
-    [Task]
-    bool HasCoffee()
+    bool CoffeeDrinker()
     {
-        return movement.HasCoffee();
+        return mind.coffeeDrinker;
     }
 
     [Task]
     void GetCoffee()
     {
+        if (!CoffeeDrinker() || mind.thirst < 50)
+        {
+            Task.current.Fail();
+        }
+
         if (Task.current.isStarting)
         {
             mind.shouldRefresh = true;
@@ -52,8 +56,31 @@ public class WorkerBehavior : MonoBehaviour
 
         mind.GetCoffee();
 
-        if(movement.IsAtCoffeeMachine() && movement.HasCoffee())
+        if (movement.closeEnough && movement.IsAtCoffeeMachine())
         {
+            mind.thirst = 0;
+            Task.current.Succeed();
+        }
+    }
+
+    [Task]
+    void GetSnack()
+    {
+        if (mind.hunger < 50)
+        {
+            Task.current.Fail();
+        }
+
+        if (Task.current.isStarting)
+        {
+            mind.shouldRefresh = true;
+        }
+
+        mind.GetSnack();
+
+        if (movement.closeEnough && movement.IsAtSnackMachine())
+        {
+            mind.hunger = 25;
             Task.current.Succeed();
         }
     }
@@ -73,7 +100,7 @@ public class WorkerBehavior : MonoBehaviour
         }
         mind.Work();
 
-        if (movement.IsAtDesk())
+        if (movement.closeEnough)
         {
             Task.current.Succeed();
         }
@@ -82,6 +109,11 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void GetLunch()
     {
+        if (!IsLunch() && mind.hunger < 75)
+        {
+            Task.current.Fail();
+        }
+
         if (Task.current.isStarting)
         {
             mind.shouldRefresh = true;

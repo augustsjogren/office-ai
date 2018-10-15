@@ -13,6 +13,7 @@ public class PathFinding : MonoBehaviour
     Coordinate startCoord;
     Coordinate goalCoord;
     Coordinate coffeeCoord;
+    Coordinate snackCoord;
     Coordinate deskCoord;
     Coordinate restaurantCoord;
 
@@ -72,6 +73,8 @@ public class PathFinding : MonoBehaviour
 
         goalCoord = GridManager.GetGoalCoordinate();
         coffeeCoord = GridManager.Instance.GetCoffeeLocation();
+        snackCoord = GridManager.Instance.GetSnackCoordinate();
+
         deskCoord = GridManager.Instance.GetCoordinate(movement.homeDesk.transform.position);
         restaurantCoord = GridManager.Instance.GetRestaurantCoordinate();
 
@@ -86,15 +89,20 @@ public class PathFinding : MonoBehaviour
 
             case 1:
                 // Get a coffee
-                targetNode = new Node(true, GridManager.Instance.GetCoffeeTarget().position, coffeeCoord.x, coffeeCoord.y);
+                targetNode = new Node(true, GridManager.Instance.GetCoffeeTarget(), coffeeCoord.x, coffeeCoord.y);
                 break;
 
             case 2:
                 // Go to the lunch room
-                targetNode = new Node(true, GridManager.Instance.GetRestaurant().position, restaurantCoord.x, restaurantCoord.y);
+                targetNode = new Node(true, GridManager.Instance.GetRestaurantPosition(), restaurantCoord.x, restaurantCoord.y);
                 break;
 
-            default:
+            case 3:
+                // Go to the lunch room
+                targetNode = new Node(true, GridManager.Instance.GetSnackPosition(), snackCoord.x, snackCoord.y);
+                break;
+
+            default: 
                 targetNode = new Node(true, transform.position, 0, 0);
                 break;
         }

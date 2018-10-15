@@ -8,8 +8,6 @@ public class OfficeManager : MonoBehaviour
 
     GameObject[] workers;
 
-    float breakTime;
-
     public int lunchTime;
 
     public bool isBreak;
@@ -41,22 +39,7 @@ public class OfficeManager : MonoBehaviour
 
     private void Update()
     {
-        breakTime += Time.deltaTime;
 
-        if (breakTime > 10)
-        {
-            //isBreak = true;
-            //isLunch = true;
-            //isMorning = false;
-        }
-
-        if (breakTime > 20)
-        {
-
-            //isBreak = false;
-            //isLunch = false;
-            breakTime = 0.0f;
-        }
     }
 
     public bool IsBreak()
