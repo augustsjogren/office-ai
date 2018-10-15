@@ -156,6 +156,7 @@ public class PathFinding : MonoBehaviour
             GridManager.Instance.SetCellToPath(node.gridX, node.gridY);
         }
 
+        PathToWaypoints();
         SmoothPath();
 
         hasRetraced = true;
@@ -164,45 +165,30 @@ public class PathFinding : MonoBehaviour
     // Smooth the a* path to be more natural, remove unneccesary waypoints if there is a line of sight
     void SmoothPath()
     {
-        PathToWaypoints();
-
+        var checkPoint = transform.position;
         int pathIndex = 0;
+        var currentPoint = wayPoints[pathIndex];
 
-        //checkPoint = starting point of path
-        Vector3 checkPoint = wayPoints[pathIndex];
-        Vector3 currentPoint;
-
-        pathIndex++;
-
-        if (wayPoints.Count > pathIndex)
+        while (wayPoints.Count > pathIndex + 1)
         {
-            //currentPoint = next point in path
-            currentPoint = wayPoints[pathIndex];
-        }
-        else
-        {
-            currentPoint = checkPoint;
-        }
-
-        if (wayPoints.Count > 0)
-        {
-            while (wayPoints.Count > pathIndex + 1)
+            if (Walkable(checkPoint, wayPoints[pathIndex + 1]))
             {
-                if (Walkable(checkPoint, wayPoints[pathIndex + 1]))
-                {
-                    var temp = currentPoint;
-                    currentPoint = wayPoints[pathIndex + 1];
-                    wayPoints.RemoveAt(pathIndex);
-                    path.RemoveAt(pathIndex);
-                }
-                else
-                {
-                    checkPoint = currentPoint;
-                    currentPoint = wayPoints[pathIndex];
-                    pathIndex++;
-                }
+                currentPoint = wayPoints[pathIndex + 1];
+                wayPoints.RemoveAt(pathIndex);
+                path.RemoveAt(pathIndex);
             }
+            else
+            {
+                checkPoint = currentPoint;
+                currentPoint = wayPoints[pathIndex + 1];
+                pathIndex++;
+            } 
         }
+    }
+
+    public void RemoveWaypoint()
+    {
+        wayPoints.RemoveAt(0);
     }
 
     // Convert path of nodes to waypoints (Vector3)
@@ -230,8 +216,10 @@ public class PathFinding : MonoBehaviour
     bool Walkable(Vector3 a, Vector3 b)
     {
         float granularity = GridManager.Instance.cellSize / 5.0f;
+        float unitWidth = 1.0f;
 
         Vector3 direction = Vector3.Normalize(a - b);
+        Vector3 perpendicularVector = Vector3.Normalize(Vector3.Cross(Vector3.up, direction));
 
         Vector3 samplePoint = a;
 

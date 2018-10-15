@@ -17,6 +17,8 @@ public class WorkerMind : MonoBehaviour
     bool closeEnough;
     public bool hasCoffee;
 
+    public bool shouldRefresh;
+
     float minimumDistance = 1.5f;
 
     // Variable for deciding what to do
@@ -40,7 +42,9 @@ public class WorkerMind : MonoBehaviour
     {
         initialPosition = transform.position;
         path = pathFinding.GetPath();
-        animator.Play("Movement");
+        //animator.Play("Movement");
+
+        //shouldRefresh = true;
     }
 
     public void SetTarget(Transform t)
@@ -76,8 +80,6 @@ public class WorkerMind : MonoBehaviour
         {
             DrawPath();
         }
-
-
     }
 
     public bool IsAtCoffeeMachine()
@@ -111,44 +113,50 @@ public class WorkerMind : MonoBehaviour
     // Advance along the path
     void Advance()
     {
-        if (path != null)
+        if (pathFinding.GetWaypoints() != null)
         {
             // Stop moving when close enough
-            if (path.Count > 0 && Vector3.Distance(transform.position, path[path.Count - 1].worldPosition) < minimumDistance)
+            if (pathFinding.GetWaypoints().Count > 0 && Vector3.Distance(transform.position, pathFinding.GetWaypoints()[pathFinding.GetWaypoints().Count - 1]) < minimumDistance)
             {
                 closeEnough = true;
-                animator.SetFloat("MoveSpeed", 0.0f);
+                //animator.SetFloat("MoveSpeed", 0.0f);
             }
             else
             {
                 closeEnough = false;
-                animator.SetFloat("MoveSpeed", 0.5f);
+                //animator.SetFloat("MoveSpeed", 0.5f);
             }
 
-            // Remove tiles already traversed
-            if (HasMoved())
+            if (IsAtWaypoint())
             {
-                path.RemoveAt(0);
-                //pathFinding.RefreshTarget();
+                //shouldRefresh = true;
+
+                // Remove previous waypoint
+                pathFinding.RemoveWaypoint();
             }
 
-            if (GridManager.isInitialized && path.Count > 0)
+            if (GridManager.isInitialized && pathFinding.GetWaypoints().Count > 0)
             {
                 var wayPts = pathFinding.GetWaypoints();
 
-                if (wayPts.Count > 1)
+                if (wayPts.Count > 0)
                 {
-                    nextLocation = wayPts[1];
+                    nextLocation = wayPts[0];
                     nextLocation.y = initialPosition.y;
-                }               
+                }
             }
 
             // Move towards the next location in the path
-            if (path.Count > 0 && !closeEnough && !path[0].isOccupied)
+            if (pathFinding.GetWaypoints().Count > 0 && !closeEnough)
             {
                 Vector3 lTargetDir = nextLocation - transform.position;
                 lTargetDir.y = 0.0f;
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.6f);
+
+                // Prevent console output stating the obvious
+                if (lTargetDir != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.6f);
+                }
 
                 transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
             }
@@ -156,57 +164,52 @@ public class WorkerMind : MonoBehaviour
         }
     }
 
-    // Has the worker moved to a new tile?
-    bool HasMoved()
+    // Has the agent has arrived at the next waypoint?
+    bool IsAtWaypoint()
     {
-        Cell newCell = GridManager.Instance.GetCellFromPosition(transform.position);
-
-        if (ReferenceEquals(currentCell, newCell))
+        if (transform.position.x == pathFinding.GetWaypoints()[0].x && transform.position.z == pathFinding.GetWaypoints()[0].z)
         {
-            // Still at the same cell
-            return false;
+            //print("At waypoint");
+            return true;
         }
 
-        // Occupy new cell and node and de-occupy previous cell and node
-        newCell.isOccupied = true;
-        GridManager.Instance.OccupyNode(newCell.x, newCell.y);
-
-        currentCell.isOccupied = false;
-        GridManager.Instance.ClearNode(currentCell.x, currentCell.y);
-
-        newCell.UpdateCell();
-        currentCell.UpdateCell();
-
-        currentCell = newCell;
-
-        return true;
+        return false;
     }
 
     public void Work()
     {
         state = 0;
-        pathFinding.RefreshTarget();
-        path = pathFinding.GetPath();
+        RefreshPathIfNeeded();
     }
 
     public void GetCoffee()
     {
         state = 1;
-        pathFinding.RefreshTarget();
-        path = pathFinding.GetPath();
+        RefreshPathIfNeeded();
     }
 
     public void GoToRestaurant()
     {
         state = 2;
-        pathFinding.RefreshTarget();
-        path = pathFinding.GetPath();
+        RefreshPathIfNeeded();
+    }
+
+    public void RefreshPathIfNeeded()
+    {
+        if (shouldRefresh)
+        {
+            pathFinding.RefreshTarget();
+        }
+
+        shouldRefresh = false;
     }
 
     // Function for drawing the path (Debug)
     void DrawPath()
     {
         Vector3 from = transform.position;
+        //Vector3 from = pathFinding.GetWaypoints()[0];
+
         Vector3 to;
 
         if (pathFinding.GetWaypoints().Count > 0)
@@ -225,7 +228,10 @@ public class WorkerMind : MonoBehaviour
                 }
 
                 // Mark the waypoints
-                Gizmos.DrawCube(from, new Vector3(0.1f, 0.1f, 0.1f));
+                Gizmos.DrawCube(from, new Vector3(0.2f, 0.1f, 0.2f));
+
+                Gizmos.color = Color.red;
+                Gizmos.DrawCube(nextLocation, new Vector3(0.1f, 0.1f, 0.1f));
 
                 from = wayPoint;
             }

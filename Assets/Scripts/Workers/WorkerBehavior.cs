@@ -42,6 +42,11 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void GetCoffee()
     {
+        //if (Task.current.isStarting)
+        //{
+        //    mind.shouldRefresh = true;
+        //}
+
         mind.GetCoffee();
         Task.current.Complete(!mind.IsAtCoffeeMachine() && !mind.HasCoffee());
     }
@@ -56,6 +61,10 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void Work()
     {
+        //if (Task.current.isStarting)
+        //{
+        //    mind.shouldRefresh = true;
+        //}
         mind.Work();
         Task.current.Complete(!mind.IsAtDesk());
     }
@@ -63,6 +72,10 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void GetLunch()
     {
+        //if (Task.current.isStarting)
+        //{
+        //    mind.shouldRefresh = true;
+        //}
         mind.GoToRestaurant();
 
     }
