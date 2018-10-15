@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &27719449
 Transform:
   m_ObjectHideFlags: 0
@@ -175,8 +175,9 @@ MonoBehaviour:
   target: {fileID: 0}
   nextLocation: {x: 0, y: 0, z: 0}
   homeDesk: {fileID: 413427955}
-  step: 0.01
+  step: 0.14
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 80
 --- !u!136 &27719452
@@ -555,6 +556,7 @@ MonoBehaviour:
   homeDesk: {fileID: 413427955}
   step: 0.11
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 0
 --- !u!114 &83547617
@@ -1214,13 +1216,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 230444294}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.31, y: 0.8, z: 3.61}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 18.47, y: 0.8, z: 3.61}
   m_LocalScale: {x: 2.3260999, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 448879523}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!65 &230444296
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2533,6 +2535,7 @@ MonoBehaviour:
   homeDesk: {fileID: 828327078}
   step: 0.11
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 0
 --- !u!114 &502107191
@@ -3038,6 +3041,7 @@ MonoBehaviour:
   homeDesk: {fileID: 230444294}
   step: 0.11
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 0
 --- !u!114 &554139768
@@ -4796,7 +4800,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &903597489
 Transform:
   m_ObjectHideFlags: 0
@@ -4839,6 +4843,7 @@ MonoBehaviour:
   homeDesk: {fileID: 230444294}
   step: 0.1
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 80
 --- !u!136 &903597492
@@ -7347,6 +7352,7 @@ MonoBehaviour:
   homeDesk: {fileID: 828327078}
   step: 0.1
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 55
 --- !u!114 &1492640808
@@ -7783,6 +7789,7 @@ MonoBehaviour:
   homeDesk: {fileID: 1361777303}
   step: 0.1
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 0
 --- !u!136 &1632216371
@@ -8752,6 +8759,7 @@ MonoBehaviour:
   homeDesk: {fileID: 1361777303}
   step: 0.11
   hasCoffee: 0
+  shouldRefresh: 0
   state: 0
   hunger: 0
 --- !u!114 &1844647057

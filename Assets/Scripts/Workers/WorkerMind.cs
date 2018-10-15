@@ -58,7 +58,6 @@ public class WorkerMind : MonoBehaviour
         // Initialize the worker with working state
         if (GridManager.isInitialized && !gotPath)
         {
-            Work();
             currentCell = GridManager.Instance.GetCellFromPosition(transform.position);
             pathFinding.RefreshTarget();
             gotPath = true;
@@ -70,7 +69,6 @@ public class WorkerMind : MonoBehaviour
         }
 
         Advance();
-
     }
 
     private void OnDrawGizmosSelected()
@@ -129,8 +127,6 @@ public class WorkerMind : MonoBehaviour
 
             if (IsAtWaypoint())
             {
-                //shouldRefresh = true;
-
                 // Remove previous waypoint
                 pathFinding.RemoveWaypoint();
             }
@@ -160,19 +156,19 @@ public class WorkerMind : MonoBehaviour
 
                 transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
             }
-
         }
     }
 
     // Has the agent has arrived at the next waypoint?
     bool IsAtWaypoint()
     {
-        if (transform.position.x == pathFinding.GetWaypoints()[0].x && transform.position.z == pathFinding.GetWaypoints()[0].z)
+        if (pathFinding.GetWaypoints().Count > 0)
         {
-            //print("At waypoint");
-            return true;
+            if (Mathf.Abs(transform.position.x - pathFinding.GetWaypoints()[0].x) < 0.01 && Mathf.Abs(transform.position.z - pathFinding.GetWaypoints()[0].z) < 0.01)
+            {
+                return true;
+            }
         }
-
         return false;
     }
 
@@ -194,6 +190,7 @@ public class WorkerMind : MonoBehaviour
         RefreshPathIfNeeded();
     }
 
+    // Only refresh the path if needed to avoid jittering and performance issues
     public void RefreshPathIfNeeded()
     {
         if (shouldRefresh)

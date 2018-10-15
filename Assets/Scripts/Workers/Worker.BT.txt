@@ -17,12 +17,12 @@ tree "Work"
 
 tree "Break"
 	while IsBreak
-		fallback
+		sequence
 			GetCoffee()
 			Work()
 
 tree "Lunch"
 	while IsLunch
-		fallback
+		sequence
 			GetLunch()
 			Work()
