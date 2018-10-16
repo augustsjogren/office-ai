@@ -21,6 +21,7 @@ public class GridManager : MonoBehaviour
     private Coordinate coffeeCoord;
     private Coordinate snackCoord;
     private Coordinate restaurantCoord;
+    public Coordinate toiletCoord;
 
     public List<Coordinate> coffeeCoords;
 
@@ -63,6 +64,7 @@ public class GridManager : MonoBehaviour
         coffeeCoord = new Coordinate(1, 1);
         restaurantCoord = new Coordinate(1, 1);
         snackCoord = new Coordinate(1, 1);
+        toiletCoord = new Coordinate(1,1);
 
         cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
 
@@ -271,6 +273,11 @@ public class GridManager : MonoBehaviour
     public GameObject GetCell(int x, int y)
     {
         return cells[x, y];
+    }
+
+        public GameObject GetCell(Coordinate coord)
+    {
+        return cells[coord.x, coord.y];
     }
 
     // Reset color for cells not longer part of the path

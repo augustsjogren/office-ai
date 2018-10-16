@@ -18,6 +18,8 @@ public class WorkerMind : MonoBehaviour
     public int hunger;
     public int thirst;
 
+    public int bladder;
+
     // Variable for deciding what to do
     // 0 is idle
     public int state;
@@ -91,6 +93,11 @@ public class WorkerMind : MonoBehaviour
     public void GetSnack()
     {
         state = 3;
+        RefreshPathIfNeeded();
+    }
+
+    public void VisitBathroom(){
+        state = 4;
         RefreshPathIfNeeded();
     }
 

@@ -102,7 +102,13 @@ public class PathFinding : MonoBehaviour
                 targetNode = new Node(true, GridManager.Instance.GetSnackPosition(), snackCoord.x, snackCoord.y);
                 break;
 
-            default: 
+            case 4:
+                // Go to the snack machine
+                Coordinate toiletCoord = GridManager.Instance.toiletCoord;
+                targetNode = new Node(true, GridManager.Instance.GetCell(toiletCoord).transform.position , toiletCoord.x, toiletCoord.y);
+                break;
+
+            default:
                 targetNode = new Node(true, transform.position, 0, 0);
                 break;
         }
@@ -192,11 +198,12 @@ public class PathFinding : MonoBehaviour
                 checkPoint = currentPoint;
                 currentPoint = wayPoints[pathIndex + 1];
                 pathIndex++;
-            } 
+            }
         }
     }
 
-    public void AddWaypoint(Vector3 point){
+    public void AddWaypoint(Vector3 point)
+    {
         wayPoints.Insert(0, point);
     }
 

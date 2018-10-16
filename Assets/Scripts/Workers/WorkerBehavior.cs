@@ -120,6 +120,27 @@ public class WorkerBehavior : MonoBehaviour
         }
 
         mind.GoToRestaurant();
+    }
 
+    [Task]
+    void GoToBathroom()
+    {
+        if (mind.bladder < 75)
+        {
+            Task.current.Fail();
+        }
+
+        if (Task.current.isStarting)
+        {
+            mind.shouldRefresh = true;
+        }
+
+        mind.VisitBathroom();
+
+        if (movement.IsAtToilet())
+        {
+            mind.bladder = 0;
+            Task.current.Succeed();
+        }
     }
 }

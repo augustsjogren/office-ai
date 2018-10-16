@@ -221,4 +221,14 @@ public class WorkerMovement : MonoBehaviour
 
         return false;
     }
+
+        public bool IsAtToilet()
+    {
+        if (Vector3.Distance(transform.position, GridManager.Instance.GetCell(GridManager.Instance.toiletCoord).transform.position) < 2.0f)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
