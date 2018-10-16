@@ -42,8 +42,9 @@ public class WorkerBehavior : MonoBehaviour
     }
 
     [Task]
-    void GetCoffee()
+    void GoToCoffeeMachine()
     {
+        // Doesn't want coffee
         if (!CoffeeDrinker() || mind.thirst < 50)
         {
             Task.current.Fail();
@@ -54,17 +55,34 @@ public class WorkerBehavior : MonoBehaviour
             mind.shouldRefresh = true;
         }
 
-        mind.GetCoffee();
+        mind.GoToCoffeeMachine();
 
         if (movement.closeEnough && movement.IsAtCoffeeMachine())
         {
-            mind.thirst = 0;
             Task.current.Succeed();
         }
     }
 
     [Task]
-    void GetSnack()
+    bool IsThirsty()
+    {
+        return mind.thirst > 50;
+    }
+
+    [Task]
+    void DrinkCoffee()
+    {
+        if(mind.thirst < 50)
+        {
+            print("Fail");
+            Task.current.Fail();
+        }
+        mind.thirst = 0;
+        Task.current.Succeed();
+    }
+
+    [Task]
+    void GoToSnackMachine()
     {
         if (mind.hunger < 50)
         {
@@ -76,13 +94,19 @@ public class WorkerBehavior : MonoBehaviour
             mind.shouldRefresh = true;
         }
 
-        mind.GetSnack();
+        mind.GoToSnackMachine();
 
         if (movement.closeEnough && movement.IsAtSnackMachine())
         {
-            mind.hunger = 25;
             Task.current.Succeed();
         }
+    }
+
+    [Task]
+    void EatSnack()
+    {
+        mind.hunger = 25;
+        Task.current.Succeed();
     }
 
     [Task]
@@ -107,24 +131,53 @@ public class WorkerBehavior : MonoBehaviour
     }
 
     [Task]
-    void GetLunch()
+    void Eat()
     {
-        if (!IsLunch() && mind.hunger < 75)
-        {
-            Task.current.Fail();
-        }
+        mind.hunger = 0;
+    }
+
+    [Task]
+    void GoToRestaurant()
+    {
+        
 
         if (Task.current.isStarting)
         {
             mind.shouldRefresh = true;
         }
 
-        mind.GoToRestaurant();
+        if (IsLunch() && mind.hunger > 50)
+        {
+            mind.GoToRestaurant();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+
+        if (movement.IsAtRestaurant())
+        {
+            Task.current.Succeed();
+        }
+    }
+
+    [Task]
+    void EatLunch()
+    {
+        mind.hunger = 0;
+        Task.current.Succeed();
+    }
+
+    [Task]
+    bool NeedToPee()
+    {
+        return mind.bladder > 50;
     }
 
     [Task]
     void GoToBathroom()
     {
+        // No need to wee
         if (mind.bladder < 75)
         {
             Task.current.Fail();
@@ -135,12 +188,18 @@ public class WorkerBehavior : MonoBehaviour
             mind.shouldRefresh = true;
         }
 
-        mind.VisitBathroom();
+        mind.GoToBathroom();
 
         if (movement.IsAtToilet())
         {
-            mind.bladder = 0;
             Task.current.Succeed();
         }
+    }
+
+    [Task]
+    void Wee()
+    {
+        mind.bladder = 0;
+        Task.current.Succeed();
     }
 }

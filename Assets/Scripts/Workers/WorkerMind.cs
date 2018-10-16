@@ -78,7 +78,7 @@ public class WorkerMind : MonoBehaviour
         RefreshPathIfNeeded();
     }
 
-    public void GetCoffee()
+    public void GoToCoffeeMachine()
     {
         state = 1;
         RefreshPathIfNeeded();
@@ -90,13 +90,13 @@ public class WorkerMind : MonoBehaviour
         RefreshPathIfNeeded();
     }
 
-    public void GetSnack()
+    public void GoToSnackMachine()
     {
         state = 3;
         RefreshPathIfNeeded();
     }
 
-    public void VisitBathroom(){
+    public void GoToBathroom(){
         state = 4;
         RefreshPathIfNeeded();
     }

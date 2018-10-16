@@ -11,6 +11,7 @@ TagManager:
   - Cell
   - CoffeeMachine
   - Wall
+  - Toilet
   layers:
   - Default
   - TransparentFX

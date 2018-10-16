@@ -1,37 +1,37 @@
-
-		
-
 tree "Root"
 	fallback
-		tree("Break")
-		tree("Lunch")
-		tree("FulfillNeeds")
+		tree("VisitBathroom")
+		tree("GetCoffee")
+		tree("GetLunch")
+		tree("GetSnack")
 		tree("Work")
 
+tree "VisitBathroom"
+	while NeedToPee
+		sequence
+			GoToBathroom()
+			Wee()
 
-tree "FulfillNeeds"
-	sequence
-		GoToBathroom()
-		GetCoffee()
-		GetSnack()
-		GetLunch()
+tree "GetCoffee"
+	while IsThirsty
+		sequence
+			GoToCoffeeMachine()
+			DrinkCoffee()
+
+tree "GetSnack"
+	while IsHungry
+		sequence
+			GoToSnackMachine()
+			EatSnack()
+
+tree "GetLunch"
+	while IsHungry
+		sequence
+			GoToRestaurant()
+			EatLunch()
 		
 tree "Idle"
 	StandStill()
 
 tree "Work"
 	Work()
-
-tree "Break"
-	while IsBreak
-		sequence
-			fallback
-				GetCoffee()
-				GetSnack()
-			Work()
-
-tree "Lunch"
-	while IsLunch
-		sequence
-			GetLunch()
-			Work()

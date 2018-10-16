@@ -80,7 +80,7 @@ public class OfficeManager : MonoBehaviour
     {
         foreach (var worker in workers)
         {
-            worker.GetComponent<WorkerMind>().GetCoffee();
+            worker.GetComponent<WorkerMind>().GoToCoffeeMachine();
         }
     }
 
