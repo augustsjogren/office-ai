@@ -98,7 +98,7 @@ public class PathFinding : MonoBehaviour
                 break;
 
             case 3:
-                // Go to the lunch room
+                // Go to the snack machine
                 targetNode = new Node(true, GridManager.Instance.GetSnackPosition(), snackCoord.x, snackCoord.y);
                 break;
 
@@ -196,6 +196,10 @@ public class PathFinding : MonoBehaviour
         }
     }
 
+    public void AddWaypoint(Vector3 point){
+        wayPoints.Insert(0, point);
+    }
+
     public void RemoveWaypoint()
     {
         wayPoints.RemoveAt(0);
@@ -226,8 +230,6 @@ public class PathFinding : MonoBehaviour
     bool Walkable(Vector3 a, Vector3 b)
     {
         float granularity = GridManager.Instance.cellSize / 5.0f;
-        float unitWidth = 1.0f;
-
         Vector3 direction = Vector3.Normalize(a - b);
         Vector3 perpendicularVector = Vector3.Normalize(Vector3.Cross(Vector3.up, direction));
 

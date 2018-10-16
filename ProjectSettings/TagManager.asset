@@ -10,6 +10,7 @@ TagManager:
   - Restaurant
   - Cell
   - CoffeeMachine
+  - Wall
   layers:
   - Default
   - TransparentFX

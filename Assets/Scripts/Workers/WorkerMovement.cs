@@ -12,6 +12,8 @@ public class WorkerMovement : MonoBehaviour
 
     public Vector3 nextLocation;
     private Vector3 initialPosition;
+    Vector3[] previousPositions;
+    int stuckCounter;
 
     public GameObject homeDesk;
 
@@ -30,6 +32,11 @@ public class WorkerMovement : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;
+        previousPositions = new Vector3[5];
+        for (int i = 0; i < 5; i++)
+        {
+            previousPositions[i] = transform.position;
+        }
 
         if (animator)
         {
@@ -42,7 +49,6 @@ public class WorkerMovement : MonoBehaviour
     {
         if (pathFinding.GetWaypoints() != null)
         {
-
             float moveSpeed = 0.0f;
 
             // Stop moving when close enough
@@ -68,22 +74,26 @@ public class WorkerMovement : MonoBehaviour
                 pathFinding.RemoveWaypoint();
             }
 
-            if (GridManager.isInitialized && pathFinding.GetWaypoints().Count > 0)
-            {
-                var wayPts = pathFinding.GetWaypoints();
-
-                if (wayPts.Count > 0)
-                {
-                    nextLocation = wayPts[0];
-                    nextLocation.y = initialPosition.y;
-                }
-            }
-
             // Move towards the next location in the path
             if (pathFinding.GetWaypoints().Count > 0 && !closeEnough)
             {
                 Vector3 lTargetDir = nextLocation - transform.position;
+
+                AvoidWorker(lTargetDir);
+
+                // Set target at ground level
                 lTargetDir.y = 0.0f;
+
+                if (GridManager.isInitialized && pathFinding.GetWaypoints().Count > 0)
+                {
+                    var wayPts = pathFinding.GetWaypoints();
+
+                    if (wayPts.Count > 0)
+                    {
+                        nextLocation = wayPts[0];
+                        nextLocation.y = initialPosition.y;
+                    }
+                }
 
                 // Prevent console output stating the obvious
                 if (lTargetDir != Vector3.zero)
@@ -91,7 +101,78 @@ public class WorkerMovement : MonoBehaviour
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lTargetDir), Time.time * 0.6f);
                 }
 
+                // Refresh the unit path if the unit is stuck
+                if (IsStuck())
+                {
+                    // print(gameObject.name + "is stuck");
+                    pathFinding.RefreshTarget();
+                }
+
                 transform.position = Vector3.MoveTowards(transform.position, nextLocation, step);
+            }
+        }
+    }
+
+    // Check if a unit hasn't moved in the last 5 frames
+    bool IsStuck()
+    {
+        if (IsAtDesk())
+        {
+            return false;
+        }
+
+        //Store the newest vector at the end of the list of vectors
+        for (int i = 0; i < previousPositions.Length - 1; i++)
+        {
+            previousPositions[i] = previousPositions[i + 1];
+        }
+
+        previousPositions[previousPositions.Length - 1] = transform.position;
+
+        if (Vector3.Distance(previousPositions[0], previousPositions[4]) < 0.1f)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    //Check if this worker is colliding with another worker and avoid if collision
+    void AvoidWorker(Vector3 direction)
+    {
+        Vector3 rayPosition = transform.position;
+        rayPosition.y = 1.0f;
+
+        // Debug.DrawRay(rayPosition + Vector3.Normalize(lTargetDir), Vector3.Normalize(lTargetDir) * 2.0f, Color.red, 0.1f);
+
+        RaycastHit hit;
+        //Check if this worker is colliding with another worker
+        if (Physics.Raycast(rayPosition, Vector3.Normalize(direction), out hit, 1.0f))
+        {
+            if (hit.transform.gameObject.tag == "Worker")
+            {
+                // Path occupied by another worker
+                Vector3 avoidanceDirection = Vector3.Cross(Vector3.Normalize(direction), Vector3.up);
+
+                // Check if it is possible to move left or right
+                if (Physics.Raycast(rayPosition, avoidanceDirection, out hit, 0.8f))
+                {
+                    if (hit.transform.tag == "Wall")
+                    {
+                        avoidanceDirection = -avoidanceDirection;
+                    }
+                    else if (Physics.Raycast(rayPosition, avoidanceDirection, out hit, 0.8f))
+                    {
+                        if (hit.transform.tag == "Wall")
+                        {
+                            // Move backwards if left and right are occupied
+                            avoidanceDirection = -Vector3.Normalize(direction);
+                        }
+                    }
+                }
+
+                // Create a new waypoint not occupied
+                pathFinding.AddWaypoint(transform.position + avoidanceDirection * 0.5f);
             }
         }
     }
