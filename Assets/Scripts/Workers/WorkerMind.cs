@@ -69,7 +69,7 @@ public class WorkerMind : MonoBehaviour
         }
     }
 
-    public void Work()
+    public void GoToDesk()
     {
         state = 0;
         RefreshPathIfNeeded();
@@ -98,6 +98,12 @@ public class WorkerMind : MonoBehaviour
         RefreshPathIfNeeded();
     }
 
+    public void GoToSink()
+    {
+        state = 5;
+        RefreshPathIfNeeded();
+    }
+
     // Only refresh the path if needed to avoid jittering and performance issues
     public void RefreshPathIfNeeded()
     {
@@ -114,7 +120,6 @@ public class WorkerMind : MonoBehaviour
     {
         Vector3 from = transform.position;
         Vector3 to;
-
         if (pathFinding.GetWaypoints().Count > 0)
         {
             foreach (var wayPoint in pathFinding.GetWaypoints())

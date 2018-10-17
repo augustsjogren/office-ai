@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     private Coordinate snackCoord;
     private Coordinate restaurantCoord;
     public Coordinate toiletCoord;
+    public Coordinate sinkCoord;
 
     public List<Coordinate> coffeeCoords;
 
@@ -65,6 +66,7 @@ public class GridManager : MonoBehaviour
         restaurantCoord = new Coordinate(1, 1);
         snackCoord = new Coordinate(1, 1);
         toiletCoord = new Coordinate(1,1);
+        sinkCoord = new Coordinate(1, 1);
 
         cell.transform.localScale = new Vector3(cellSize, cell.transform.localScale.y, cellSize);
 
@@ -92,6 +94,7 @@ public class GridManager : MonoBehaviour
             for (int c = 0; c < cols; c++)
             {
                 currentPosition.x = positionX;
+                currentPosition.y = cell.transform.position.y;
                 currentPosition.z = positionZ;
 
                 GameObject newCell = Instantiate(cell);

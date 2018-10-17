@@ -7,10 +7,12 @@ tree "Root"
 		tree("Work")
 
 tree "VisitBathroom"
-	while NeedToPee
-		sequence
+	sequence
+		while NeedToPee
 			GoToBathroom()
-			Wee()
+		Wee()
+		GoToSink()
+		WashHands()
 
 tree "GetCoffee"
 	while IsThirsty
@@ -34,4 +36,6 @@ tree "Idle"
 	StandStill()
 
 tree "Work"
-	Work()
+	sequence
+		GoToDesk()
+		Work()

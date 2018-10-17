@@ -8,7 +8,7 @@ public class WorkerMovement : MonoBehaviour
     WorkerMind workerMind;
 
     public bool closeEnough;
-    float minimumDistance = 1.5f;
+    float minimumDistance = 1.75f;
 
     public Vector3 nextLocation;
     private Vector3 initialPosition;
@@ -201,7 +201,7 @@ public class WorkerMovement : MonoBehaviour
     {
         var dist = Vector3.Distance(transform.position, homeDesk.transform.position);
 
-        if (dist < minimumDistance)
+        if (dist < 2.0f)
         {
             return true;
         }
@@ -221,7 +221,7 @@ public class WorkerMovement : MonoBehaviour
 
     public bool IsAtSnackMachine()
     {
-        if (Vector3.Distance(transform.position, GridManager.Instance.GetSnackPosition()) < 2.0f)
+        if (Vector3.Distance(transform.position, GridManager.Instance.GetSnackPosition()) < 2.2f)
         {
             return true;
         }
@@ -242,6 +242,21 @@ public class WorkerMovement : MonoBehaviour
     public bool IsAtRestaurant()
     {
         if (Vector3.Distance(transform.position, GridManager.Instance.GetCell(GridManager.Instance.GetRestaurantCoordinate()).transform.position) < 2.0f)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsAtSink()
+    {
+        return IsAtLocation(GridManager.Instance.GetCell(GridManager.Instance.sinkCoord).transform.position);
+    }
+
+    bool IsAtLocation(Vector3 location)
+    {
+        if (Vector3.Distance(transform.position, location) < 2.0f)
         {
             return true;
         }

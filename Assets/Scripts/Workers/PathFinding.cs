@@ -101,9 +101,14 @@ public class PathFinding : MonoBehaviour
                 break;
 
             case 4:
-                // Go to the snack machine
+                // Go to the bathroom
                 Coordinate toiletCoord = GridManager.Instance.toiletCoord;
-                targetNode = new Node(true, GridManager.Instance.GetCell(toiletCoord).transform.position , toiletCoord.x, toiletCoord.y);
+                targetNode = new Node(true, GridManager.Instance.GetCell(toiletCoord).transform.position, toiletCoord.x, toiletCoord.y);
+                break;
+
+            case 5:
+                // Go to sink
+                targetNode = new Node(GridManager.Instance.sinkCoord);
                 break;
 
             default:
@@ -181,22 +186,26 @@ public class PathFinding : MonoBehaviour
     {
         var checkPoint = transform.position;
         int pathIndex = 0;
-        var currentPoint = wayPoints[pathIndex];
-
-        while (wayPoints.Count > pathIndex + 1)
+        if (wayPoints.Count > 0)
         {
-            if (Walkable(checkPoint, wayPoints[pathIndex + 1]))
+            var currentPoint = wayPoints[pathIndex];
+
+            while (wayPoints.Count > pathIndex + 1)
             {
-                currentPoint = wayPoints[pathIndex + 1];
-                wayPoints.RemoveAt(pathIndex);
-                path.RemoveAt(pathIndex);
+                if (Walkable(checkPoint, wayPoints[pathIndex + 1]))
+                {
+                    currentPoint = wayPoints[pathIndex + 1];
+                    wayPoints.RemoveAt(pathIndex);
+                    path.RemoveAt(pathIndex);
+                }
+                else
+                {
+                    checkPoint = currentPoint;
+                    currentPoint = wayPoints[pathIndex + 1];
+                    pathIndex++;
+                }
             }
-            else
-            {
-                checkPoint = currentPoint;
-                currentPoint = wayPoints[pathIndex + 1];
-                pathIndex++;
-            }
+
         }
     }
 

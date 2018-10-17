@@ -91,6 +91,10 @@ public class Cell : MonoBehaviour
             {
                 GridManager.Instance.toiletCoord = new Coordinate(x, y);
             }
+            else if (hitObj.tag == "Sink")
+            {
+                GridManager.Instance.sinkCoord = new Coordinate(x, y);
+            }
             else if (hit.transform.tag == "Restaurant")
             {
                 GridManager.Instance.SetRestaurantLocation(x, y);

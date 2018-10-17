@@ -12,6 +12,7 @@ TagManager:
   - CoffeeMachine
   - Wall
   - Toilet
+  - Sink
   layers:
   - Default
   - TransparentFX

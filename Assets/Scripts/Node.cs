@@ -23,6 +23,22 @@ public class Node : IHeapItem<Node>
         gridY = _gridY;
     }
 
+    public Node(bool _walkable, Vector3 _worldPos, Coordinate coord)
+    {
+        walkable = _walkable;
+        worldPosition = _worldPos;
+        gridX = coord.x;
+        gridY = coord.y;
+    }
+
+    public Node(Coordinate coord)
+    {
+        walkable = true;
+        worldPosition = GridManager.Instance.GetCell(coord).transform.position;
+        gridX = coord.x;
+        gridY = coord.y;
+    }
+
     public int fCost
     {
         get

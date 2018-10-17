@@ -119,18 +119,25 @@ public class WorkerBehavior : MonoBehaviour
     }
 
     [Task]
-    void Work()
+    void GoToDesk()
     {
         if (Task.current.isStarting)
         {
             mind.shouldRefresh = true;
         }
-        mind.Work();
 
-        if (movement.closeEnough)
+        mind.GoToDesk();
+
+        if (movement.IsAtDesk())
         {
             Task.current.Succeed();
         }
+    }
+
+    [Task]
+    void Work()
+    {
+        Task.current.Succeed();
     }
 
     [Task]
@@ -198,9 +205,35 @@ public class WorkerBehavior : MonoBehaviour
     }
 
     [Task]
+    void GoToSink()
+    {
+        if (Task.current.isStarting)
+        {
+            mind.shouldRefresh = true;
+        }
+
+        mind.GoToSink();
+
+        if (movement.IsAtSink())
+        {
+            Task.current.Succeed();
+        }
+    }
+
+    [Task]
+    void WashHands()
+    {
+        Task.current.Succeed();
+    }
+
+    [Task]
     void Wee()
     {
-        needs.bladder = 0;
-        Task.current.Succeed();
+        needs.bladder -= Time.deltaTime * 20.0f;
+
+        if(needs.bladder < 5.0f)
+        {
+            Task.current.Succeed();
+        }
     }
 }

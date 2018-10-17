@@ -87,7 +87,7 @@ public class OfficeManager : MonoBehaviour
     {
         foreach (var worker in workers)
         {
-            worker.GetComponent<WorkerMind>().Work();
+            worker.GetComponent<WorkerMind>().GoToDesk();
         }
     }
 }
