@@ -19,7 +19,7 @@ public class WorkerMovement : MonoBehaviour
 
     Animator animator;
 
-    public float step = 1;
+    float step = 1;
 
     private void Awake()
     {
@@ -42,6 +42,13 @@ public class WorkerMovement : MonoBehaviour
         {
             animator.Play("Movement");
         }
+
+        step = Time.timeScale / 10.0f;
+    }
+
+    private void Update()
+    {
+        step = Time.timeScale / 10.0f;
     }
 
     // Advance along the path

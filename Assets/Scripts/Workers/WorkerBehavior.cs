@@ -5,11 +5,13 @@ public class WorkerBehavior : MonoBehaviour
 {
     WorkerMind mind;
     WorkerMovement movement;
+    Needs needs;
 
     private void Awake()
     {
         mind = GetComponent<WorkerMind>();
         movement = GetComponent<WorkerMovement>();
+        needs = GetComponent<Needs>();
     }
 
     [Task]
@@ -21,7 +23,7 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     bool IsHungry()
     {
-        return mind.hunger > 50;
+        return needs.hunger > 50;
     }
 
     [Task]
@@ -45,7 +47,7 @@ public class WorkerBehavior : MonoBehaviour
     void GoToCoffeeMachine()
     {
         // Doesn't want coffee
-        if (!CoffeeDrinker() || mind.thirst < 50)
+        if (!CoffeeDrinker() || needs.thirst < 50)
         {
             Task.current.Fail();
         }
@@ -66,25 +68,26 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     bool IsThirsty()
     {
-        return mind.thirst > 50;
+        return needs.thirst > 50;
     }
 
     [Task]
     void DrinkCoffee()
     {
-        if(mind.thirst < 50)
+        if(needs.thirst < 50)
         {
             print("Fail");
             Task.current.Fail();
         }
-        mind.thirst = 0;
+        needs.thirst = 0;
+        needs.bladder += 25;
         Task.current.Succeed();
     }
 
     [Task]
     void GoToSnackMachine()
     {
-        if (mind.hunger < 50)
+        if (needs.hunger < 50)
         {
             Task.current.Fail();
         }
@@ -105,7 +108,7 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void EatSnack()
     {
-        mind.hunger = 25;
+        needs.hunger -= 25;
         Task.current.Succeed();
     }
 
@@ -133,20 +136,18 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void Eat()
     {
-        mind.hunger = 0;
+        needs.hunger = 0;
     }
 
     [Task]
     void GoToRestaurant()
     {
-        
-
         if (Task.current.isStarting)
         {
             mind.shouldRefresh = true;
         }
 
-        if (IsLunch() && mind.hunger > 50)
+        if (IsLunch() && needs.hunger > 25)
         {
             mind.GoToRestaurant();
         }
@@ -164,21 +165,21 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void EatLunch()
     {
-        mind.hunger = 0;
+        needs.hunger = 0;
         Task.current.Succeed();
     }
 
     [Task]
     bool NeedToPee()
     {
-        return mind.bladder > 50;
+        return needs.bladder > 50;
     }
 
     [Task]
     void GoToBathroom()
     {
         // No need to wee
-        if (mind.bladder < 75)
+        if (needs.bladder < 75)
         {
             Task.current.Fail();
         }
@@ -199,7 +200,7 @@ public class WorkerBehavior : MonoBehaviour
     [Task]
     void Wee()
     {
-        mind.bladder = 0;
+        needs.bladder = 0;
         Task.current.Succeed();
     }
 }

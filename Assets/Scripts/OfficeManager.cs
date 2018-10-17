@@ -16,6 +16,8 @@ public class OfficeManager : MonoBehaviour
 
     public Clock clock;
 
+    public System.Random needsRand;
+
     private void Awake()
     {
         if (instance == null)
@@ -28,6 +30,8 @@ public class OfficeManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         clock = GameObject.Find("ClockText").GetComponent<Clock>();
+
+        needsRand = new System.Random();
     }
 
 
@@ -35,11 +39,6 @@ public class OfficeManager : MonoBehaviour
     void Start()
     {
         workers = GameObject.FindGameObjectsWithTag("Worker");
-    }
-
-    private void Update()
-    {
-
     }
 
     public bool IsBreak()

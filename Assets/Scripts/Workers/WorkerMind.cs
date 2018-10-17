@@ -15,10 +15,7 @@ public class WorkerMind : MonoBehaviour
     public bool hasSnack;
     public bool shouldRefresh;
     public bool coffeeDrinker;
-    public int hunger;
-    public int thirst;
-
-    public int bladder;
+   
 
     // Variable for deciding what to do
     // 0 is idle

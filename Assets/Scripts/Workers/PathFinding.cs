@@ -11,7 +11,6 @@ public class PathFinding : MonoBehaviour
     WorkerMovement movement;
 
     Coordinate startCoord;
-    Coordinate goalCoord;
     Coordinate coffeeCoord;
     Coordinate snackCoord;
     Coordinate deskCoord;
@@ -71,7 +70,6 @@ public class PathFinding : MonoBehaviour
         startCoord = GridManager.Instance.GetCoordinate(transform.position);
         Node startNode = new Node(true, transform.position, startCoord.x, startCoord.y);
 
-        goalCoord = GridManager.GetGoalCoordinate();
         coffeeCoord = GridManager.Instance.GetCoffeeLocation();
         snackCoord = GridManager.Instance.GetSnackCoordinate();
 
@@ -238,7 +236,7 @@ public class PathFinding : MonoBehaviour
     {
         float granularity = GridManager.Instance.cellSize / 5.0f;
         Vector3 direction = Vector3.Normalize(a - b);
-        Vector3 perpendicularVector = Vector3.Normalize(Vector3.Cross(Vector3.up, direction));
+        //Vector3 perpendicularVector = Vector3.Normalize(Vector3.Cross(Vector3.up, direction));
 
         Vector3 samplePoint = a;
 
