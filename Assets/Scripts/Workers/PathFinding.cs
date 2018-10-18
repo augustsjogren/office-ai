@@ -111,6 +111,11 @@ public class PathFinding : MonoBehaviour
                 targetNode = new Node(GridManager.Instance.sinkCoord);
                 break;
 
+            case 6:
+                // Go to sink
+                targetNode = new Node(GridManager.Instance.teaCoord);
+                break;
+
             default:
                 targetNode = new Node(true, transform.position, 0, 0);
                 break;

@@ -104,6 +104,12 @@ public class WorkerMind : MonoBehaviour
         RefreshPathIfNeeded();
     }
 
+    public void GoToTeaMachine()
+    {
+        state = 6;
+        RefreshPathIfNeeded();
+    }
+
     // Only refresh the path if needed to avoid jittering and performance issues
     public void RefreshPathIfNeeded()
     {

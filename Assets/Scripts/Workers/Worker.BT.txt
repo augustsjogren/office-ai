@@ -1,7 +1,7 @@
 tree "Root"
 	fallback
 		tree("VisitBathroom")
-		tree("GetCoffee")
+		tree("GetDrink")
 		tree("GetLunch")
 		tree("GetSnack")
 		tree("Work")
@@ -12,13 +12,26 @@ tree "VisitBathroom"
 			GoToBathroom()
 		Wee()
 		GoToSink()
+		Wait(2.0)
 		WashHands()
 
-tree "GetCoffee"
+
+tree "GetDrink"
 	while IsThirsty
+		fallback
+			tree("GetCoffee")
+			tree ("GetTea")
+
+
+tree "GetCoffee"
 		sequence
 			GoToCoffeeMachine()
-			DrinkCoffee()
+			Drink()
+
+tree "GetTea"
+		sequence
+			GoToTeaMachine()
+			Drink()
 
 tree "GetSnack"
 	while IsHungry
@@ -30,6 +43,7 @@ tree "GetLunch"
 	while IsHungry
 		sequence
 			GoToRestaurant()
+			Wait(5.0)
 			EatLunch()
 		
 tree "Idle"

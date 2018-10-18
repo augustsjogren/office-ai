@@ -66,15 +66,37 @@ public class WorkerBehavior : MonoBehaviour
     }
 
     [Task]
+    void GoToTeaMachine()
+    {
+        // Not thirsty
+        if (needs.thirst < 50)
+        {
+            Task.current.Fail();
+        }
+
+        if (Task.current.isStarting)
+        {
+            mind.shouldRefresh = true;
+        }
+
+        mind.GoToTeaMachine();
+
+        if (movement.closeEnough && movement.IsAtTeaMachine())
+        {
+            Task.current.Succeed();
+        }
+    }
+
+    [Task]
     bool IsThirsty()
     {
         return needs.thirst > 50;
     }
 
     [Task]
-    void DrinkCoffee()
+    void Drink()
     {
-        if(needs.thirst < 50)
+        if (needs.thirst < 50)
         {
             print("Fail");
             Task.current.Fail();
@@ -231,7 +253,7 @@ public class WorkerBehavior : MonoBehaviour
     {
         needs.bladder -= Time.deltaTime * 20.0f;
 
-        if(needs.bladder < 5.0f)
+        if (needs.bladder < 5.0f)
         {
             Task.current.Succeed();
         }

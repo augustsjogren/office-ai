@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -252,6 +253,11 @@ public class WorkerMovement : MonoBehaviour
     public bool IsAtSink()
     {
         return IsAtLocation(GridManager.Instance.GetCell(GridManager.Instance.sinkCoord).transform.position);
+    }
+
+    internal bool IsAtTeaMachine()
+    {
+        return IsAtLocation(GridManager.Instance.GetCell(GridManager.Instance.teaCoord).transform.position);
     }
 
     bool IsAtLocation(Vector3 location)

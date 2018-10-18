@@ -87,6 +87,10 @@ public class Cell : MonoBehaviour
             {
                 GridManager.Instance.SetSnackLocation(x, y);
             }
+            else if (hitObj.name == "TeaMachine")
+            {
+                GridManager.Instance.teaCoord = new Coordinate(x, y);
+            }
             else if (hitObj.tag == "Toilet")
             {
                 GridManager.Instance.toiletCoord = new Coordinate(x, y);

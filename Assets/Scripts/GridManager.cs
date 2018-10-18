@@ -19,11 +19,12 @@ public class GridManager : MonoBehaviour
 
     private static Coordinate goalCoord;
     private Coordinate coffeeCoord;
+    public Coordinate teaCoord;
     private Coordinate snackCoord;
     private Coordinate restaurantCoord;
     public Coordinate toiletCoord;
     public Coordinate sinkCoord;
-
+    
     public List<Coordinate> coffeeCoords;
 
     private Node[,] grid;
@@ -65,6 +66,7 @@ public class GridManager : MonoBehaviour
         coffeeCoord = new Coordinate(1, 1);
         restaurantCoord = new Coordinate(1, 1);
         snackCoord = new Coordinate(1, 1);
+        teaCoord = new Coordinate(1, 1);
         toiletCoord = new Coordinate(1,1);
         sinkCoord = new Coordinate(1, 1);
 
